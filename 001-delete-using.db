@@ -1,0 +1,23 @@
+Borrar registros de una tabla consultando otra tabla. Comando DELETE USING.
+
+*-- Vamos a mostrar los registros de la tabla libros uniendola con la tabla editorial en
+aquellos registros donde coincidan los numeros editoriales y el nombre de la 
+editorial sea Mexico. --*
+
+SELECT * FROM libros l
+JOIN editorial e
+ON l.codigoeditorial = e.codigo_editorial
+WHERE e.nombreeditorial = 'Mexico' 
+
+*-- Ahora, vamos a eliminar todos los libros de la editorial 'Mexico'. Pero si no conocemos
+o no recordamos el codigo_editorial de la tabla editorial. Para ello, podriamos intentar lo
+siguiente: --*
+
+DELETE FROM libros WHERE nombreeditorial = 'Mexico'
+
+*-- Pero esto es absurdo porque la columna nombreeditorial pertenece a la tabla editorial.
+Por lo tanto, para resolver esto vamos a usar el comando USING de la siguiente manera: --*
+
+DELETE FROM libros l USING editorial e
+WHERE l.codigoeditorial = e.codigo_editorial
+AND e.nombreeditorial = 'Mexico' 
