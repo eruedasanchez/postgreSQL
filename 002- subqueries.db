@@ -1,0 +1,101 @@
+Subconsultas
+
+*-- Las Subconsultas o Subqueries consisten en utilizar resultados de una consulta
+dentro de otra consulta que se va a considerar la consulta principal. --*
+
+*-- Ejemplo --*
+
+*-- Comenzamos mostrando todos los registros de la tabla empleados ejecutando 
+SELECT * FROM empleados y observamos que la tabla tiene una columna llamada 
+sueldo. El objetivo es mostrar a aquellos empleados cuyo sueldo es mayor o igual
+al sueldo promedio. --*
+
+*-- Opcion 1: Para esto, podemos calcular el sueldo promedio sumando todos los sueldos
+y diviendolos por la cantidad de registros. Una vez realizado, consultar en la tabla
+empleados por aquellos sueldos que son mayores o iguales al sueldo promedio. 
+Esto lo logramos ejecutando el siguiente comando: --*
+
+SELECT * FROM empleados
+
+SELECT AVG(sueldo) AS sueldo_promedio FROM empleados
+
+*-- El comando AVG = AVERAGE = PROMEDIO calcula el promedio
+de los valores de los registros de la columna pasada por parametro.
+El resultado es igual 3843.750.... --*
+
+*-- Ahora que ya tenemos calculado el sueldo promedio, mostramos
+los registros de la tabla empleados donde su sueldo es mayor o igual a 
+3843.7 --*
+
+SELECT nombre, apellidopaterno, apellidomaterno, sueldo 
+FROM empleados
+WHERE sueldo >= 3843.7
+
+*-- La otra opcion para resolver esto es con SUBCONSULTAS de la siguiente manera: --*
+
+SELECT nombre, apellidopaterno, apellidomaterno, sueldo 
+FROM empleados
+WHERE sueldo >= (SELECT AVG(sueldo) AS sueldo_promedio FROM empleados)
+
+*-- En este caso, se resuelve primero la consulta 
+SELECT AVG(sueldo) AS sueldo_promedio FROM empleados  
+que calcula el sueldo promedio y luego retorna las columnas
+indicadas de la tabla empleados donde el sueldo es mayor al
+sueldo promedio. --*
+
+*-- Ejemplo 2. Ahora, vamos a obtener todos los empleados que tienen el
+mismo puesto que Juan Lopez Sanchez (Limpieza) --*
+
+*-- La opcion de resolver esto sin subconsultas es la siguiente. Comenzamos 
+viendo el puesto de Juan de la siguiente manera: --*
+
+SELECT nombre, apellidopaterno, apellidomaterno, sueldo 
+FROM empleados
+WHERE puesto = 'Limpieza' 
+
+*-- Ahora, para resolverlo con subconsultas ejecutamos el siguiente comando: --*
+
+SELECT nombre, apellidopaterno, apellidomaterno, sueldo 
+FROM empleados
+WHERE puesto = (SELECT puesto FROM empleados WHERE nombre = 'Juan' AND apellidopaterno = 'Lopez' AND apellidomaterno = 'Sanchez')
+
+*-- Ejemplo 3. Vamos a averiguar el precio de un libro determinado en la tabla libros  
+y la diferencia en precio que tiene con el libro de menor precio. --*
+
+*-- Comenzamos viendo la tabla libros con SELECT * FROM libros. Por ejemplo,
+para el libro de titulo: 'El conejito', autor: 'Flors' y precio: 200.50, 
+calculamos el libro de menor precio ejecutando el siguiente comando: --*
+
+SELECT MIN(precio) FROM libros
+
+*-- Y observamos que el valor del libro de menor precio es 85.90
+Ahora, si queremos conocer el nombre del libro ejecutamos: --*
+
+SELECT titulo, autor, precio FROM libros WHERE precio = 85.90
+
+*-- Y vemos que son dos libros con precio 85.90 ('LA tortuga' y 'El payaso de las tinieblas') --*
+
+*-- Ahora, vamos a mostrar la diferencia del libro 'El conejito' (precio: 200.50) con el 
+minimo precio (85.90) utilizando subconsultas de la siguiente manera: --*
+
+SELECT titulo, autor, 
+precio - (SELECT MIN(precio) FROM libros) AS diferencia_min_valor
+FROM libros WHERE titulo LIKE '%El conejito'
+
+*-- Obteniendo en la columna diferencia_min_valor = 114.60 como esperabamos. --*
+
+*-- Ejemplo 4. Encontrar la diferencia de promedio del alumno que tiene la columna numcontrol = 1000
+con el alumno de mayor promedio. --*
+
+*-- Comenzamos calculado el mayor promedio de la siguiente manera: --*
+
+SELECT MAX(promedio) FROM alumnos
+
+*-- El numero maximo de promedio obtenido es 100.00 --*
+
+*-- Por lo tanto, calculamos la diferencia realizando la siguiente subconsulta: --*
+
+SELECT numcontrol, nombre, apellidopaterno, apellidomaterno, promedio, 
+(SELECT MAX(promedio) FROM alumnos) - promedio AS diferencia_max_promedio
+FROM alumnos WHERE numcontrol = 1000 
+
