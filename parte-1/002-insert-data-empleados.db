@@ -1,0 +1,24 @@
+Insertar datos en una tabla. Ejercicio.
+
+*-- Para insertar datos en la tabla 'empleados' utilizamos
+el siguiente comando --*
+
+INSERT INTO empleados(numempleado, nombre, apellidopaterno, apellidomaterno, fechanacimiento, sueldo, puesto) VALUES
+(1, 'Juan Jose', 'Lopez', 'Sanchez', '1992-07-28', 4250.8, 'Contador'),
+(2, 'Ana Maria', 'Gonzalez', 'Miranda', '1988-05-25', 3845.2, 'Secretaria'),
+(3, 'Daniel', 'Garza', 'Lopez', '1991-02-18', 6000, 'Gerente');
+
+*-- En este caso, colocamos el comando INSERT INTO para insertar datos dentro de la tabla
+'empleados'. Luego, entre parentesis colocamos el nombre de cada columna y por ultimo,
+el comando VALUES seguido de los valores entre () donde se debe respetar el orden declarado
+en empleados(numempleado, nombre, apellidopaterno, apellidomaterno, fechanacimiento, sueldo, puesto) 
+
+*-- Ahora, verificamos que los empleados fueron agregados ejecutando el comando
+SELECT * FROM empleados --*
+
+*-- Si queremos ver solo los valores de las columnas nombre, apellidopaterno y sueldo
+de la tabla 'empleados' lo podemos hacer ejecutando el siguiente comando: --*
+
+SELECT nombre, apellidopaterno, sueldo FROM empleados
+
+*-- De esta forma, solo se seleccionan las columnas nombre, apellidopaterno y sueldo de 'empleados'--*
