@@ -1,0 +1,6 @@
+Operador BETWEEN
+
+Otra forma de eliminar aquellos alumnos donde su promedio es mayor o igual que 90 y 
+menor que 95 es utilizanddo el operador BETWEEN de la siguiente manera: --*
+
+DELETE FROM alumnos WHERE promedio >= 90 BETWEEN promedio < 95

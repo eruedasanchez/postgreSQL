@@ -1,0 +1,36 @@
+Borrar registros de una tabla.
+
+*-- Para eliminar todos los datos de la tabla 'clientes', ejecutamos el siguiente
+comando: --*
+
+DELETE FROM clientes
+
+*-- De este modo, la tabla clientes queda vacia. --*
+
+*-- Ahora, vemos la informacion de la tabla 'alumnos' con el comando SELECT * FROM alumnos.
+Observamos que el alumno Juan Vazquez Perez se encuentra repetido con numcontrol = 1000
+y numcontrol = 1001. Entonces, queremos eliminar a aquel con numcontrol = 1000.
+Para ello, ejecutamos el siguiente comando: --*
+
+DELETE FROM alumnos WHERE numcontrol = 1000
+
+*-- Ahora, si queremos eliminar al alumno Juan Vazquez Perez lo podemos hacer de la
+siguiente manera: --*
+
+DELETE FROM alumnos WHERE nombre = 'Juan' AND apellidopaterno = 'Vazquez' AND apellidomaterno = 'Perez'
+
+*-- En este caso, la solicitud se satisface de manera correcta porque solo hay un alumno que
+coincide con el nombre y los apellidos pasados pero no es una buena practica porque existen
+personas que tienen el mismo nombre y apellido; y en ese caso, se eliminarian todas aquellas
+personas que coincidan con el nombre y apellido solicitado. Para ello, tenemos la columna
+'numcontrol' que contiene valores unívocos.
+
+*-- Ahora, si queremos eliminar aquellos alumnos donde su promedio es menor que 90
+lo podemos hacer de la siguiente manera: --*
+
+DELETE FROM alumnos WHERE promedio < 90
+
+*-- Ahora, si queremos eliminar aquellos alumnos donde su promedio es menor que 90
+lo podemos hacer de la siguiente manera: --*
+
+DELETE FROM alumnos WHERE promedio >= 90 AND promedio < 95
