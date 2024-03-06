@@ -1,0 +1,39 @@
+*-- Modificar registros con tablas temporales --*
+
+*-- Comenzamos eliminando todos los registros de la tabla 'historialcobranza'
+de la siguiente manera: --*
+
+TRUNCATE historialcobranza
+
+*-- Como hicimos anteriormente, vamos a insertar en la tabla historialcobranza algunos
+valores de la tabla cobranza de la siguiente manera: --*
+
+INSERT INTO historialcobranza(idcliente, nombre, apellidopaterno, apellidomaterno)
+SELECT DISTINCT idcliente, nombre, apellidopaterno, apellidomaterno FROM cobranza
+
+*-- Ahora, vamos a crear una tabla temporal llamada 'temporal' de la siguiente manera: --*
+
+CREATE TEMPORARY TABLE temporal AS
+SELECT DISTINCT idcliente, COUNT(fechacobro::DATE) AS contador
+FROM cobranza
+GROUP BY idcliente
+
+*-- Entonces, creamos una tabla temporal llamada temporal seleccionando los clientes distintos
+de la tabla cobranza en una columna y en la otra columna va a tener un contador de las 
+distintas fechas de cobro de cada cliente --*
+
+SELECT * FROM temporal ORDER BY idcliente
+
+*-- Ahora, vamos a colocar el valor de la columna contador de la tabla 'temporal'
+en la columna cantidadllamadas de la tabla 'historialcobranza' correspondiente 
+a cada cliente de la siguiente manera: --*
+
+UPDATE historialcobranza h
+SET cantidadllamadas = t.contador
+FROM temporal t
+WHERE t.idcliente = h.idcliente
+
+*-- Y obtenemos el resultado esperado ejecutando SELECT * FROM historialcobranza --*
+
+
+
