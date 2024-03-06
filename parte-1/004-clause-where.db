@@ -1,0 +1,22 @@
+Clausula WHERE
+
+*-- Generalmente, no nos va a interesar ver toda la informacion de la tabla y vamos
+a querer ver solo cierta informacion. Para ello, vamos a utilizar la clasula WHERE. --*
+
+*-- Ejemplo. Supongamos que queremos seleccionar a aquellos alumnos
+donde su promedio es mayor o igual que 90. Para ello, ejecutamos el 
+siguiente comando: --*
+
+SELECT * FROM alumnos WHERE promedio >= 90
+
+*-- En este caso, con la clausula WHERE filtramos solo aquellas filas
+de los alumnos DONDE su promedio es mayor o igual que 90 --*
+
+*-- Ahora, si solo queremos seleccionar las columnas
+nombre, apellidopaterno, apellidomaterno, carrera y promedio
+de aquellos alumnos donde su promedio es mayor o igual que 90
+ejecutamos el siguiente comando: --*
+
+SELECT nombre, apellidopaterno, apellidomaterno, carrera, promedio
+FROM alumnos
+WHERE promedio >= 90
