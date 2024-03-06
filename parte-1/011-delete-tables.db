@@ -1,0 +1,20 @@
+Borrar una tabla. Comando DROP TABLE
+
+*-- Para eliminar la tabla llamada clientes ejecutamos el siguiente comando: --*
+
+DROP TABLE clientes, alumnos
+
+*-- Con el simbolo coma ',' podemos borrar mas de una tabla simultaneamente --*
+
+*-- Ahora, si queremos eliminar la tabla 'tabla1' ejecutamos el comando DROP TABLE tabla1.
+Sin embargo, como esta tabla no existe, se arroja el error: 'ERROR:  table "tabla1" does not exist'  
+Para evitar este error, utilizamos la clausula IF EXISTS de la siguiente manera: --*
+
+DROP TABLE IF EXISTS tabla1
+
+*-- Y el resultado obtenido es: 
+'NOTICE:  table "tabla1" does not exist, skipping
+DROP TABLE
+Query returned successfully in 89 msec.' --*
+
+
