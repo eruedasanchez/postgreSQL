@@ -1,0 +1,8 @@
+Clausula DISTINCT
+
+*-- Ejecutando SELECT * FROM clientes ORDER BY totaldeuda DESC, observamos que
+existen varios que el valor de 'totaldeuda' es de 8000. Por lo tanto, si solo
+queremos mostrar los valores de 'totaldeuda' sin repetidos utilizamos la 
+clausula DISTINCT de la siguiente manera: --*
+
+SELECT DISTINCT totaldeuda FROM clientes ORDER BY totaldeuda DESC

@@ -1,0 +1,18 @@
+*-- Si ejecutamos SELECT * FROM clientes, observamos que la tabla se encuentra 
+ordenada de acuerdo a las ultimas modificaciones realizadas pero no 
+de acuerdo al valor de la columna 'idcliente'.
+Para ordenar una tabla en base a una columna particular, ejecutamos el
+siguiente comando: --*
+
+SELECT * FROM clientes ORDER BY idcliente
+
+*-- En este caso, se ordena por 'idcliente' de manera ascendente por defecto.
+Lo podemos declarar usando la clausula ASC y si queremos ordenar de manera
+descendente, ejecutamos: --*
+
+SELECT * FROM clientes ORDER BY idcliente DESC
+
+*-- Ahora, para ordenar de acuerdo al 'totaldeuda' y mostrar 
+a los clientes segun el que mas deuda tiene ejecutamos el siguiente comando: --*
+
+SELECT * FROM clientes ORDER BY totaldeuda DESC
