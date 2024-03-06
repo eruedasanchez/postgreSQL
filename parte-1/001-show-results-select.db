@@ -1,0 +1,11 @@
+Visualizar la información de una tabla. Comando SELECT.
+
+*-- Ahora, vamos a visualizar los resultados de la tabla utilizando
+el siguiente comando: --* 
+
+SELECT * FROM empleados
+
+*-- De este modo, vemos todas las columnas (*) con sus respectivos
+valores de la tabla 'empleados'. En este caso, no se muestran filas
+porque la tabla se encuentra vacia. --* 
+

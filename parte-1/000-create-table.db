@@ -1,0 +1,27 @@
+Creacion de tablas. Comando CREATE TABLE
+
+*-- Para crear una tabla ejecutamos el siguiente comando: --* 
+
+CREATE TABLE empleados(
+numempleado INTEGER,
+nombre VARCHAR(45),
+apellidopaterno VARCHAR(45),
+apellidomaterno VARCHAR(45),
+fechanacimiento DATE,
+sueldo DECIMAL(7,2),
+puesto VARCHAR(45)
+);
+
+*-- En este caso, creamos la tabla 'empleados' que tiene 7 columnas:
+numempleado de tipo entero,
+nombre de tipo text con un limite de 45 caracteres,
+apellidopaterno de tipo text con un limite de 45 caracteres,
+apellidomaterno de tipo text con un limite de 45 caracteres,
+fechanacimiento de tipo DATE = FECHA,
+sueldo de tipo decimal ,
+puesto de tipo text con un limite de 45 caracteres --*
+
+
+
+
+ 
