@@ -1,0 +1,32 @@
+*-- Operador LIKE y NOT LIKE --*
+
+El Operador LIKE nos sirve para averiguar si una cadena de caracteres o solamente un
+caracter coincide con un patron especifico.
+
+*-- Veamos esto con el siguiente ejemplo: --*
+
+*-- Queremos ver cuantos alumnos tienen el apellido paterno que comienza con la letra 'e' 
+(El resultado es 2: Espino y Espinoza) --*
+
+*-- Para ello, ejecutamos el siguiente comando: --*
+
+SELECT * FROM alumnos WHERE apellidopaterno LIKE 'E%'
+
+*-- El simbolo '%' representa un comodin y significa que
+se van a filtrar aquellos alumnos donde el apellidopaterno
+comience con la letra 'E' y los demas caracteres que sigan
+no se van a tener en cuenta. --*
+
+*-- Ahora, si queremos ver cuantos alumnos tienen el apellido paterno que termina con la letra 'z' 
+ejecutamos el siguiente comando: --*
+
+SELECT * FROM alumnos WHERE apellidopaterno LIKE '%z'
+
+*-- De la misma manera, funciona el operador NOT LIKE --*
+
+SELECT * FROM alumnos WHERE apellidopaterno NOT LIKE 'V%'
+
+*-- En este caso, indicamos que queremos mostrar a todos aquellos alumnos
+donde el apellido paterno no comience con la letra 'V'. --*
+
+
