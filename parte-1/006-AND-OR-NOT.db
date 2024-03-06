@@ -1,0 +1,22 @@
+Operadores AND y OR.
+
+*-- Tambien podemos seleccionar alumnos que cumplan mas de una condición.
+Esto lo logramos con el operador AND de la siguiente manera: --* 
+
+SELECT * FROM alumnos WHERE promedio >= 90 AND carrera = 'Mercadotecnia'
+
+*-- De esta manera, se muestran unicamente a aquellos alumnos donde su 
+promedio es mayor o igual que 90 Y realizan la carrera de 'Mercadotecnia' --*
+
+*-- Ahora, queremos mostrar unicamente a aquellos alumnos que 
+realizan la carrera de 'Contabilidad' O realizan la carrera de 'Ingenieria en Sistemas'.
+Esto lo hacemos ejecutando el siguiente comando: --*
+
+SELECT * FROM alumnos WHERE carrera = 'Contabilidad' OR carrera = 'Ingenieria en Sistemas'
+
+*-- Ahora, si queremos mostrar unicamente a aquellos alumnos que NO 
+realizan la carrera de 'Ingenieria en Sistemas' utilizamos el operador
+NOT de la siguiente manera: --*
+
+SELECT * FROM alumnos WHERE NOT carrera = 'Ingenieria en Sistemas'
+
