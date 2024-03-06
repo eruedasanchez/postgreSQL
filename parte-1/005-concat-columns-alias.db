@@ -1,0 +1,27 @@
+Concatenar columnas
+
+*-- Anteriormente, habiamos seleccionado las columnas
+nombre, apellidopaterno, apellidomaterno, carrera y promedio
+de aquellos alumnos donde su promedio es mayor o igual que 90
+ejecutando el siguiente comando: --*
+
+SELECT nombre, apellidopaterno, apellidomaterno, carrera, promedio
+FROM alumnos
+WHERE promedio >= 90
+
+*-- Ahora, si queremos concatenar las columnas nombre, apellidopaterno y apellidomaterno 
+en una sola llamada 'nombre_completo' ejecutamos el siguiente comando: --*
+
+SELECT nombre||' '||apellidopaterno||' '||apellidomaterno, carrera, promedio
+FROM alumnos
+WHERE promedio >= 90
+
+*-- Pero ahora, el nombre de la columna del nombre completo no es 'nombre_completo'
+sino '?column?'. Esto lo solucionamos con la clausula AS de la siguiente manera:
+
+SELECT nombre||' '||apellidopaterno||' '||apellidomaterno AS nombre_completo, carrera, promedio
+FROM alumnos
+WHERE promedio >= 90
+
+
+
