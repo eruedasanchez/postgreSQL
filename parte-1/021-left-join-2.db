@@ -1,0 +1,81 @@
+LEFT JOIN. Ejercicio 2
+
+*-- Comenzamos creando la tabla 'empleados' y 'puestos' --*
+
+CREATE TABLE empleados(
+	idempleado INTEGER PRIMARY KEY,
+	nombre VARCHAR(45),
+	puestoid INTEGER
+);
+
+CREATE TABLE puestos(
+	puestoid INTEGER PRIMARY KEY,
+	nombrepuesto VARCHAR(45)
+);
+
+*-- E insertamos los siguientes registros --*
+
+INSERT INTO empleados VALUES(1000,'Juan',1);
+INSERT INTO empleados VALUES(1001,'Jose',1);
+INSERT INTO empleados VALUES(1002,'Daniel',4);
+INSERT INTO empleados VALUES(1003,'Laura',2);
+INSERT INTO empleados VALUES(1004,'Carlos',1);
+INSERT INTO empleados VALUES(1005,'Daniel',1);
+INSERT INTO empleados VALUES(1006,'Luna',3);
+INSERT INTO empleados VALUES(1007,'Oscar',5);
+INSERT INTO empleados VALUES(1008,'Joao',6);
+INSERT INTO empleados VALUES(1009,'Gabriel',7);
+INSERT INTO empleados VALUES(1010,'Pedro',7);
+INSERT INTO empleados VALUES(1011,'Jesus',2);
+INSERT INTO empleados VALUES(1012,'Linda',6);
+INSERT INTO empleados VALUES(1013,'Ana',7);
+INSERT INTO empleados VALUES(1014,'Maria',7);
+INSERT INTO empleados VALUES(1015,'Jose Carlos',2);
+
+INSERT INTO puestos VALUES(1,'Limpieza');
+INSERT INTO puestos VALUES(2,'Secretaria');
+INSERT INTO puestos VALUES(3,'Cajera');
+INSERT INTO puestos VALUES(4,'Facturista');
+INSERT INTO puestos VALUES(5,'Capturista');
+INSERT INTO puestos VALUES(6,'Contador');
+INSERT INTO puestos VALUES(7,'RH');
+INSERT INTO puestos VALUES(8,'Gerente');
+INSERT INTO puestos VALUES(9,'Subgerente');
+INSERT INTO puestos VALUES(10,'Jardinero');
+INSERT INTO puestos VALUES(11,'Office boy');
+INSERT INTO puestos VALUES(12,'Cocinero personal');
+
+*-- En este caso, cada empleado de la tabla 'empleados' tiene
+asignado un valor 'puestoid' que es un identificador de su puesto.
+Para conocer dicho, tenemos la columna 'nombrepuesto' de la tabla
+'puestos'. Por lo tanto, ambas tablas están relacionadas por la 
+columna 'puestoid'.
+Ahora, si observamos en la tabla 'empleados', vemos que los empleados
+tienen asignados puestos del 1 al 7 mientras que ninguno tiene
+asignado algun puesto en el rango [8-12]. 
+Por lo tanto, para ver que puestos no están cubiertos por ningun
+empleados vamos a utilizar un LEFT JOIN. --*
+
+SELECT * FROM puestos p
+LEFT JOIN empleados e
+ON e.puestoid = p.puestoid
+ORDER BY p.puestoid
+
+*-- Ahora, insertamos los siguientes empleados con los siguientes valores: --*
+
+INSERT INTO empleados VALUES(1016, 'Sandra', 15);
+INSERT INTO empleados VALUES(1017, 'Ismael', 15);
+INSERT INTO empleados VALUES(1018, 'Jonas', 15);
+INSERT INTO empleados VALUES(1019, 'Lorena', 13);
+INSERT INTO empleados VALUES(1020, 'Yuridia', 14);
+
+*-- Sin embargo, insertamos puestos que no se encuentran definidos en la
+columna de 'puestoid' (solo están definidos del 1 al 12). 
+Por lo tanto, vamos a mostrar a aquellos empleados que
+tienen o no un puesto asignado utilizando un 'LEFT JOIN'. --*
+
+SELECT * FROM empleados e  
+LEFT JOIN puestos p
+ON e.puestoid = p.puestoid 
+ORDER BY e.puestoid 
+
