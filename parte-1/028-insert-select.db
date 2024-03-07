@@ -1,0 +1,23 @@
+Insertar datos en una tabla buscando un valor en otra tabla,
+es decir, vamos a combinar el comando INSERT con SELECT.
+
+SELECT * FROM libros
+SELECT * FROM editorial
+
+INSERT INTO libros(codigo, titulo, autor, codigoeditorial, precio, cantidad)
+SELECT 10041, 'La perdida del baston', 'Dionicio Castillo', codigo_editorial , 250.9, 6
+FROM editorial
+WHERE nombreeditorial='Mexico'
+
+*--- De esta manera, logramos insertar en la tabla libros los datos indicados en el SELECT
+pero donde el valor de la columna codigoeditorial se extrae de la columna codigo_editorial
+correspondiente a la tabla editorial donde su valor es el asocialdo al 
+nombreeditorial='Mexico' (codigo_editorial = 220) ---*
+
+*--- Ahora, vamos a insertar en la tabla vendedor, un vendedor con id 1023 
+donde la numero de sucursal sea la correspondiente a municipio = Ensenada ---*
+
+INSERT INTO vendedor(id, nombre, apellidopaterno, apellidomaterno, antiguedad, telefono, num_sucursal)
+SELECT 1023, 'Lorenzo', 'Gamez', 'Lu', '2020-08-02', '2222222222', numsucursal
+FROM sucursales
+WHERE municipio = 'Ensenada';
