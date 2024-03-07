@@ -1,54 +1,6 @@
-*--- Nueva seccion: INSERT INTO con SELECT. Vamos a realizar inserciones con una tabla ya creada. ---*
 
-*--- Comenzamos creando la tabla alumnossobresalientes ---*
 
-CREATE TABLE alumnossobresalientes(
-	numcontrol BIGINT,
-	nombre VARCHAR(45),
-	apellidopaterno VARCHAR(45),
-	apellidomaterno VARCHAR(45),
-	fechaingreso TEXT,
-	carrera VARCHAR(45),
-	promedio DECIMAL(6,2)
-);
 
-INSERT INTO alumnossobresalientes(numcontrol, nombre, apellidopaterno, apellidomaterno, fechaingreso, carrera, promedio)
-SELECT DISTINCT(numcontrol), nombre, apellidopaterno, apellidomaterno, fechaingreso, carrera, promedio
-FROM alumnos
-WHERE promedio >= 90
-
-*-- De esta manera, insertamos en la tabla alumnossobresalientes a aquellos alumnos cuyo promedio 
-es mayor o igual que 90 --*
-
-*-- Nueva secccion: Actualizar datos de una tabla con valores de otra tabla.
-Para ello, vamos a combinar UPDATE con JOIN --*
-
-*-- Anteriormente, habiamos eliminado las columnas municipio y estado de la tabla Vendedor.
-Para este ejemplo, vamos a volver a agregarlas. --*
-
-ALTER TABLE vendedor ADD COLUMN municipio VARCHAR(45);
-ALTER TABLE vendedor ADD COLUMN estado VARCHAR(45);
-
-*-- Ahora, vamos a modificar la tabla vendedor para que almacene los nombres del nombre
-y el municipio donde trabaja el vendedor de la siguiente manera: --*
-
-UPDATE vendedor AS v
-SET municipio = s.municipio 
-FROM sucursales AS s
-WHERE v.num_sucursal = s.numsucursal
-
-UPDATE vendedor AS v
-SET estado = s.estado 
-FROM sucursales AS s
-WHERE v.num_sucursal = s.numsucursal
-
-*-- Por lo tanto, actualizamos la tabla vendedor en el campo municipio 
-de la tabla sucursales donde el numero de sucursal de la tabla vendedor 
-coincida con el numero de sucursal de la tabla sucursales. Analogo, para
-la columna estado --*
-
-SELECT * FROM vendedor
-SELECT * FROM sucursales
 
  
 
