@@ -1,2 +1,19 @@
 RIGHT JOIN.
 
+*-- Ahora, ejecutamos un 'RIGHT JOIN' --*
+
+SELECT * FROM empleados e
+RIGHT JOIN puestos p
+ON e.puestoid = p.puestoid 
+ORDER BY p.puestoid
+
+*-- Por lo tanto, con un 'RIGHT JOIN', mostramos todos
+los puestos de la tabla 'puestos' (del 1 al 12) y para cada uno
+de ellos, los distintos empleados que se encuentran asociados a 
+dichos puestos. Donde, los puestos del 8 al 12 se quedan en 'null'
+porque no tiene puestos asociados. 
+Observemos que los empleados con puestos mayores a 12, no 
+se muestran en la tabla resultante porque la prioridad la
+tiene la tabla 'puestos' y solo tiene puestos definidos del
+1 al 12. --*
+
