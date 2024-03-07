@@ -1,0 +1,84 @@
+Modificar estructura de una tabla. Comando ALTER TABLE.
+
+El comando ALTER TABLE sirve para modificar la estructura de una tabla ya existente.
+Vamos a poder crear columnas nuevas, modificar el nombre de columnas ya existentes,
+borrar columnas ya existentes, cambiar el nombre de una tabla, cambiar restricciones
+de una tabla, etc. 
+
+*-- Comenzamos eliminando la tabla 'infoestudiante' que habiamos creado anteriormente --*
+
+DROP TABLE infoestudiante 
+
+*-- Ahora, la creamos nuevamente --*
+
+CREATE TABLE infoestudiante(
+	id_estudiante INTEGER,
+	ciudad VARCHAR(45),
+	telefono VARCHAR(12),
+	CONSTRAINT FK_id_estudiante FOREIGN KEY (id_estudiante)
+	REFERENCES estudiantes(idestudiante) 
+);
+
+*-- Inserto los siguientes registros --*
+
+INSERT INTO infoestudiante(id_estudiante,ciudad,telefono) VALUES
+(1,'Guadalajara','1242222299'),
+(2,'Monterrey','7742222299'),
+(3,'Hermosillo','7878434323'),
+(4,'Obregon','8842222299'),
+(5,'Guadalajara','8999222299'),
+(1,'Cd. de Mexico','1242222299');
+
+*-- Con 'ALTER TABLE', vamos a cambiar el nombre de la tabla
+'infoestudiante' a 'informacionalumnos' de la siguiente manera: --*
+
+ALTER TABLE infoestudiante RENAME TO informacionalumnos
+
+*-- Agregamos una nueva columna a la tabla 'informacionalumnos' llamada
+'columnaprueba' --*
+
+ALTER TABLE informacionalumnos ADD columnaprueba VARCHAR(45)
+
+*-- Tambien podemos agregar columnas nuevas de la siguiente manera: --*
+
+ALTER TABLE informacionalumnos ADD COLUMN columnapruebados VARCHAR(45)
+
+*-- Ahora, si quiero borrar las dos columnas que fueron creadas recientemente
+ejecuto el siguiente comando: --*
+
+ALTER TABLE informacionalumnos DROP COLUMN columnaprueba, DROP COLUMN columnapruebados 
+
+*-- Ahora, si insertamos un alumno con 'id_estudiante' repetido (1), nos 
+va a dejar porque no definimos la columna 'id_estudiante' como 
+'PRIMARY KEY'. --*
+
+INSERT INTO informacionalumnos VALUES(1, 'Mochis', '9898999991'); 
+
+*-- Por lo tanto, para que 'id_estudiante' sea 'PRIMARY KEY', 
+tenemos que eliminar primero a los registros que tienen claves
+duplicadas. Esto lo hacemos de la siguiente manera: --*
+
+DELETE FROM informacionalumnos WHERE id_estudiante = 1 AND ciudad = 'Cd. de Mexico';
+DELETE FROM informacionalumnos WHERE id_estudiante = 1 AND ciudad = 'Mochis';
+
+*-- Ahora, si establecemos la columna 'id_estudiante' como PK --*
+
+ALTER TABLE informacionalumnos ADD PRIMARY KEY(id_estudiante);
+
+*-- Ahora, vamos a establecer la columna 'id_estudiante' como 'FOREIGN KEY'
+de la tabla 'informacionalumnos' y asociandola a la tabla
+'estudiantes' a la columna 'idestudiante' de la siguiente manera: --*
+
+ALTER TABLE informacionalumnos 
+ADD FOREIGN KEY(id_estudiante) 
+REFERENCES estudiantes(idestudiante);
+
+*-- Ahora, como la columna 'idestudiante' es un FK, si intentamos insertar
+un registro con valor de 'idestudiante' que no se encuentre 
+definido en la columna 'id_estudiante' de la tabla 'informacionalumnos',
+nos va a arrojar un error. Por ejemplo, si ejecutamos: --*
+
+INSERT INTO informacionalumnos VALUES(100, 'Hermosillo', '2222222222')
+
+*-- Arroja error porque la clave 100 no esta definida
+en la columna 'id_estudiante' de la tabla 'informacionalumnos'. --*
