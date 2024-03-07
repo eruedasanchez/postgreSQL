@@ -1,0 +1,20 @@
+Copiar registros de excel a una tabla en PostgreSQL 
+
+*--- Para realizar esto, comenzamos eliminando la tabla empleados ---*
+
+CREATE TABLE empleados(
+	empleadoid INTEGER,
+	nombre VARCHAR(45),
+	apellidopaterno VARCHAR(45),
+	apellidomaterno VARCHAR(45),
+	edad INTEGER,
+	telefono BIGINT,
+	sueldo DECIMAL(8,2),
+	puesto VARCHAR(45)
+);
+
+*--- Luego, buscamos la ruta del archivo csv que queremos copiar a la tabla empleados 
+y ejecutamos el siguiente comando ---*
+
+COPY empleados FROM '/Users/ezequielpc/Desktop/employees.csv' 
+HEADER CSV DELIMITER ',';
