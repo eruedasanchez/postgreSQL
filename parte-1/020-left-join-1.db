@@ -1,0 +1,85 @@
+LEFT JOIN
+
+Otra manera de unir datos de dos o mas tablas es a traves de los LEFT JOIN.
+
+*-- Vamos a utilizar la tabla 'libros' (ya la tenemos creada) y 
+vamos a crear la tabla 'editorial' para unir información. --*
+
+CREATE TABLE editorial(
+	codigo_editorial INTEGER,
+	nombre VARCHAR(45),
+	ciudad VARCHAR(45),
+	estado VARCHAR(45)
+);
+
+*-- E insertamos los siguientes datos: --*
+
+INSERT INTO editorial VALUES
+(220,'Mexico','Tijuana','Baja California'),
+(221,'El buen lector','Celaya','Guanajuato'),
+(222,'El capricho','Leon','Guanajuato'),
+(223,'Forever 89','Mazatlan','Sinaloa'),
+(224,'1950','Hermosillo','Sonora'),
+(225,'Violeta','Navojoa','Sonora'),
+(226,'Esperanza','Monterrey','Nuevo Leon'),
+(227,'La luna','Monterrey','Nuevo Leon'),
+(228,'Horizonte del mañana','Puebla','Puebla'),
+(229,'Las flores','Guadalajara','Jalisco'),
+(230,'Renacer','Puerto Vallarta','Jalisco'),
+(231,'Celeste','Tepic','Nayarit'),
+(232,'Antonios','Guadalajara','Jalisco');
+
+*-- Observamos que ambas tablas están relacionadas por el codigo editorial
+e.codigo_editorial y l.codigoeditorial donde e pertenece a la tabla editorial
+y l pertenece a la tabla libros. 
+Ahora, ejecutamos el siguiente comando: --*
+
+SELECT l.titulo, l.autor, l.codigoeditorial, e.nombre FROM libros l
+JOIN editorial e
+ON l.codigoeditorial = e.codigo_editorial 
+ORDER BY l.codigoeditorial 
+
+*-- De esta manera, mostramos las columnas titulo, autor, codigoeditorial
+de la tabla libros uniendola con la columna nombre de la tabla
+editorial asociada al correspondiente nombre de la editorial
+de cada libro que se encuentra en la tabla libros. --*
+
+*-- Continuamos insertando mas registros a la tabla editorial. --*
+
+INSERT INTO editorial VALUES
+(233,'Madrid','Tijuana','Baja California'),
+(234,'Paris','Mexicali','Baja California'),
+(235,'California','Monterrey','Nuevo Leon'),
+(236,'Monterrey','Monterrey','Nuevo Leon'),
+(237,'Editorial Castellana','Guadalajara','Jalisco'),
+(238,'La aventura lectora','Monterrey','Nuevo Leon');
+
+INSERT INTO editorial VALUES(800,'Los ojos del lector','Tijuana','Baja California'),
+(801,'El puerto','Celaya','Guanajuato'),
+(802,'El intelectual','Leon','Guanajuato'),
+(803,'Cartoons','Mazatlan','Sinaloa'),
+(804,'Renacer','Hermosillo','Sonora'),
+(805,'La casita del lector','Navojoa','Sonora'),
+(806,'La hermosa','Monterrey','Nuevo Leon');
+
+*-- Podemos observar que en la tabla libros no se encuentra ninguna
+que como numero de editorial a aquellas que se encuentran en el rango 
+de 800. Esto lo vemos ejecutando 
+SELECT * FROM libros WHERE codigoeditorial >= 800.
+Para mostrar cuales son las editoriales que tienen asociados libros en
+la tabla 'libros' vamos a utilizar un 'LEFT JOIN'. --*
+
+SELECT * FROM editorial e
+LEFT JOIN libros l
+ON l.codigoeditorial = e.codigo_editorial 
+ORDER BY e.codigo_editorial  
+
+*-- En este caso, vamos a buscar registros en la tabla 'editorial' y vamos a
+chequear si se encuentran en la tabla 'libros'. Es decir, vamos a mostrar por
+cada codigo_editorial de la tabla 'editorial' cuantos libros tiene asociado ese
+codigo. Por ejemplo, el codigo_editorial 220 tiene asociado tres libros y se asocia
+a cada uno de ellos la informacion de la tabla libros como el titulo, autor, precio, etc.
+En el caso en que el codigo_editorial >= 800 (vimos que no tenia libros asociados) se rellenan
+las columnas pertenecientes a la tabla 'libros' con el valor null. --*
+
+
