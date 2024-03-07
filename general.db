@@ -1,29 +1,4 @@
-CREATE TABLE infoestudiante(
-	id_estudiante INTEGER,
-	ciudad VARCHAR(45),
-	telefono VARCHAR(12),
-	CONSTRAINT FK_id_estudiante FOREIGN KEY (id_estudiante)
-	REFERENCES estudiantes(idestudiante) 
-);
 
-SELECT * FROM informacionalumnos
-SELECT * FROM estudiantes
-
-ALTER TABLE infoestudiante RENAME TO informacionalumnos
-ALTER TABLE informacionalumnos ADD columnaprueba VARCHAR(45)
-ALTER TABLE informacionalumnos ADD COLUMN columnapruebados VARCHAR(45)
-ALTER TABLE informacionalumnos DROP COLUMN columnaprueba, DROP COLUMN columnapruebados 
-
-INSERT INTO informacionalumnos VALUES(1, 'Mochis', '9898999991'); 
-
-DELETE FROM informacionalumnos WHERE id_estudiante = 1 AND ciudad = 'Cd. de Mexico';
-DELETE FROM informacionalumnos WHERE id_estudiante = 1 AND ciudad = 'Mochis';
-
-ALTER TABLE informacionalumnos ADD PRIMARY KEY(id_estudiante);
-
-ALTER TABLE informacionalumnos ADD FOREIGN KEY(id_estudiante) REFERENCES estudiantes(idestudiante);
-
-INSERT INTO informacionalumnos VALUES(100, 'Hermosillo', '2222222222')
 
 *---- JOINS CON GROUP BY ----*
 

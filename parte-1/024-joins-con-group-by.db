@@ -1,0 +1,68 @@
+JOINS con GROUP BY
+
+SELECT * FROM libros ORDER BY codigoeditorial
+SELECT * FROM editorial
+
+*--- A continuacion, contamos cuantos libros tiene cada editorial y
+como tenemos que relacionar la tabla 'libros' con la tabla
+'editorial', vamos a combinar el uso de 'JOIN' con 'GROUP BY'.---*
+
+*-- Pero primero, comenzamos renombrando la columna 'nombre' por
+'nombreeditorial' de la tabla 'editorial': --*
+
+ALTER TABLE editorial RENAME COLUMN nombre TO nombreeditorial
+
+SELECT e.nombreeditorial, e.codigo_editorial, COUNT(*) AS cantidad_por_editorial
+FROM editorial e
+JOIN libros l
+ON l.codigoeditorial = e.codigo_editorial
+GROUP BY e.nombreeditorial, e.codigo_editorial
+
+*--- De esta manera, mostramos las columnas de 'nombreeditorial' y
+'codigo_editorial' de la tabla 'editorial' y en la columna
+'cantidad_por_editorial' contamos de la tabla 'editorial' unida a la tabla
+'libros' donde coincidan los registros l.codigoeditorial = e.codigo_editorial
+y los agrupamos por e.nombreeditorial y e.codigo_editorial ---*
+
+*--- Ahora, insertamos mas registros en la tabla editorial ---*
+
+INSERT INTO editorial VALUES(800,'Los ojos del lector','Tijuana','Baja California'),
+(801,'El puerto','Celaya','Guanajuato'),
+(802,'El intelectual','Leon','Guanajuato'),
+(803,'Cartoons','Mazatlan','Sinaloa'),
+(804,'Renacer','Hermosillo','Sonora'),
+(805,'La casita del lector','Navojoa','Sonora'),
+(806,'La hermosa','Monterrey','Nuevo Leon');
+
+*--- Ahora, mostramos aquellos libros que tienen un codigo editorial 
+que existe en la tabla editorial ---*
+
+SELECT l.titulo, l.autor, e.codigo_editorial, e.nombreeditorial
+FROM editorial e 
+LEFT JOIN libros l 
+ON e.codigo_editorial = l.codigoeditorial 
+ORDER BY e.codigo_editorial
+
+*--- Ahora, vamos a mostrar la cantidad de libros que tiene cada editorial ---*
+
+SELECT e.nombreeditorial, COUNT(*) AS cant_libros_editorial
+FROM editorial e
+LEFT JOIN libros l
+ON e.codigo_editorial = l.codigoeditorial 
+GROUP BY e.nombreeditorial
+
+*--- Esto es asi porque al realizar un 'LEFT JOIN' la prioridad la tiene
+la tabla 'editorial' y se van a mostrar todas las editoriales que tienen 
+libros asociados ---*
+
+*--- Ahora, realizamos la busqueda contando por l.codigoeditorial y 
+en este caso, se cuentan por cada editorial, todos los libros que
+tienen asociados y en caso de que no tenga ningun libro asociado,
+se coloca 0. ---*
+
+SELECT e.codigo_editorial, COUNT(l.codigoeditorial) AS cant_libros_editorial
+FROM editorial e
+LEFT JOIN libros l
+ON e.codigo_editorial = l.codigoeditorial 
+GROUP BY e.codigo_editorial
+ORDER BY e.codigo_editorial 
