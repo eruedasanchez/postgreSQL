@@ -1,0 +1,35 @@
+Creacion de una tabla a partir de otra tabla. CREATE SELECT
+
+*--- Comenzamos viendo de la tabla empleados, la cantidad distintas de puestos
+ejecutando el siguiente comando: ---*
+
+SELECT DISTINCT puesto FROM empleados
+
+*--- Ahora, vamos a crear una tabla llamada puestos con una columna
+que contiene los distintos puestos, donde los distintos puestos
+los extraemos de la tabla empleados. 
+A esto, lo llamamos creacion de una tabla a partir de otra tabla ---*
+
+CREATE TABLE puestos AS SELECT DISTINCT puesto FROM empleados
+
+*--- Por lo tanto, vemos los distintos puestos de la nueva tabla puestos ---*
+
+SELECT * FROM puestos
+
+*--- Ahora, vamos a crear una tabla llamada 'rango a' que va a 
+almacenar los registros de aquellos empleados donde su sueldo es
+mayor o igual que 5000. Lo hacemos ejecutando el siguiente
+comando: ---* 
+
+CREATE TABLE rangoA 
+AS SELECT nombre, apellidopaterno, apellidomaterno, edad, sueldo, puesto 
+FROM empleados WHERE sueldo >= 5000
+
+*--- Finalmente, vemos la nueva tabla creada ejecutando el 
+siguiente comando: ---*
+
+SELECT * FROM rangoA que coincide con el resultado obtenido en
+SELECT * FROM empleados WHERE sueldo >= 5000
+
+
+
