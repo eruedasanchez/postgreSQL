@@ -1,0 +1,10 @@
+Relacion uno a muchos
+
+En una relacion de uno a muchos, un registro de una tabla se puede asociar a uno
+o varios registros de otra tabla. Por ejemplo, cada cliente puede tener varios pedidos 
+de venta.
+
+Como en el ejemplo que vimos de pedidos y clientes.
+
+Por ejemplo, un pedido puede pertenecer a un solo cliente pero un cliente puede
+realizar muchos pedidos.
