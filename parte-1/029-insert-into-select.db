@@ -1,0 +1,21 @@
+INSERT INTO con SELECT. Vamos a realizar inserciones con una tabla ya creada.
+
+*--- Comenzamos creando la tabla alumnossobresalientes ---*
+
+CREATE TABLE alumnossobresalientes(
+	numcontrol BIGINT,
+	nombre VARCHAR(45),
+	apellidopaterno VARCHAR(45),
+	apellidomaterno VARCHAR(45),
+	fechaingreso TEXT,
+	carrera VARCHAR(45),
+	promedio DECIMAL(6,2)
+);
+
+INSERT INTO alumnossobresalientes(numcontrol, nombre, apellidopaterno, apellidomaterno, fechaingreso, carrera, promedio)
+SELECT DISTINCT(numcontrol), nombre, apellidopaterno, apellidomaterno, fechaingreso, carrera, promedio
+FROM alumnos
+WHERE promedio >= 90
+
+*-- De esta manera, insertamos en la tabla alumnossobresalientes a aquellos alumnos cuyo promedio 
+es mayor o igual que 90 --*
