@@ -1,0 +1,29 @@
+Relacion uno a uno
+
+*-- Supongamos que queremos realizar la siguiente insercion --*
+
+INSERT INTO infoestudiante VALUES(100, 'Monterrey', '7878734234')
+
+*-- Me arroja el siguiente error: 
+'insert or update on table "infoestudiante" violates foreign key constraint "fk_id_estudiante"
+SQL state: 23503
+Detail: Key (id_estudiante)=(100) is not present in table "estudiantes".'
+
+Esto sucede porque id_estudiante = 100 no existe en la tabla 'estudiantes' y esta al ser
+una clave foraneo, solo admite valores para id_estudiante que esten definidos 
+en la tabla 'estudiantes' --*
+
+*-- Para resolver esto, insertamos primero el estudiante con id_estudiante = 8 en
+la tabla 'estudiantes' y luego, la informacion restante en la tabla 'infoestudiante'
+de la siguiente manera: --*
+
+INSERT INTO estudiantes VALUES(8, 'Toledo Gamez', 'Carlos');
+INSERT INTO infoestudiante VALUES(8, 'Monterrey', '7878734234');
+
+*-- Una vez realizado esto, vamos a realizar la union de ambas tablas
+mediante un 'inner join' de la siguiente manera: --*
+
+SELECT * FROM estudiantes e
+INNER JOIN infoestudiante i
+ON e.idestudiante = i.id_estudiante
+
