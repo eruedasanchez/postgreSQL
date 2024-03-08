@@ -1,0 +1,94 @@
+JOINS con 3 tablas (Tablas relacionadas)
+
+*-- Comenzamos creando las siguientes tablas --*
+
+CREATE TABLE clientes(
+	id_cliente INTEGER PRIMARY KEY,
+	nombre_cliente VARCHAR(45)
+);
+
+CREATE TABLE ventas(
+	id_venta INTEGER PRIMARY KEY,
+	id_cliente INTEGER,
+	CONSTRAINT FK_id_ventas FOREIGN KEY (id_cliente)
+	REFERENCES clientes(id_cliente)
+);
+
+CREATE TABLE detalle_ventas(
+id_venta INTEGER PRIMARY KEY,
+descripcion VARCHAR(45),
+cantidad INTEGER,
+CONSTRAINT FK_id_detalles FOREIGN KEY (id_venta)
+ REFERENCES ventas(id_venta)
+);
+
+*-- Ahora, insertamos los siguientes registros en la tabla 'clientes': --*
+
+INSERT INTO clientes VALUES(10000,'Juan Roman');
+INSERT INTO clientes VALUES(10001,'Jose Esparza');
+INSERT INTO clientes VALUES(10002,'Lucia Gamez');
+INSERT INTO clientes VALUES(10003,'Alberto Luna');
+INSERT INTO clientes VALUES(10004,'Jonas Estrada');
+INSERT INTO clientes VALUES(10005,'Daniel Gomez');
+INSERT INTO clientes VALUES(10006,'Carlos Sanchez');
+INSERT INTO clientes VALUES(10007,'Ramon Lopez');
+INSERT INTO clientes VALUES(10008,'Celeste Luna');
+INSERT INTO clientes VALUES(10009,'Luz Espino');
+
+*-- Ahora, insertamos los siguientes registros en la tabla 'ventas': --*
+
+INSERT INTO ventas VALUES(1,10000);
+INSERT INTO ventas VALUES(2,10001);
+INSERT INTO ventas VALUES(3,10004);
+INSERT INTO ventas VALUES(4,10001);
+INSERT INTO ventas VALUES(5,10001);
+INSERT INTO ventas VALUES(6,10002);
+INSERT INTO ventas VALUES(7,10003);
+INSERT INTO ventas VALUES(8,10000);
+INSERT INTO ventas VALUES(9,10001);
+INSERT INTO ventas VALUES(10,10000);
+INSERT INTO ventas VALUES(11,10008);
+INSERT INTO ventas VALUES(12,10008);
+INSERT INTO ventas VALUES(13,10007);
+INSERT INTO ventas VALUES(14,10005);
+INSERT INTO ventas VALUES(15,10005);
+
+*-- Por lo tanto, como la segunda columna de la tabla corresponde a
+'id_cliente', entonces debemos asegurarnos como es una 'FOREIGN KEY' que
+los valores ingresados se encuentren definidos en la tabla 'clientes'. --* 
+
+*-- Por ultimo, insertamos los siguientes registros en la tabla
+'detalle_ventas' donde los valores de la columna 'id_venta' deben 
+estar definidos en la tabla 'ventas' porque es una 'FOREIGN KEY': --*
+
+INSERT INTO detalle_ventas VALUES(1,'Cartón 100 plumas VICO',4);
+INSERT INTO detalle_ventas VALUES(2,'Paquete 100 hojas blancas tam carta',8);
+INSERT INTO detalle_ventas VALUES(3,'Cartón 100 lapices VICO',2);
+INSERT INTO detalle_ventas VALUES(4,'Paquete 50 borradores Almanza',1);
+INSERT INTO detalle_ventas VALUES(5,'Paquete 50 lapiceros Almanza',1);
+INSERT INTO detalle_ventas VALUES(6,'Paquete 50 sacapuntas Almanza',4);
+INSERT INTO detalle_ventas VALUES(7,'Cartón 100 plumas VICO',1);
+INSERT INTO detalle_ventas VALUES(8,'Cartón 100 lapices VICO',4);
+INSERT INTO detalle_ventas VALUES(9,'Plumón Aqua',25);
+INSERT INTO detalle_ventas VALUES(10,'Cartón 100 plumas VICO',1);
+INSERT INTO detalle_ventas VALUES(11,'Cartón 100 plumas VICO',2);
+INSERT INTO detalle_ventas VALUES(12,'Cartón 100 lapices VICO',6);
+INSERT INTO detalle_ventas VALUES(13,'Paquete 100 hojas blancas tam carta',4);
+INSERT INTO detalle_ventas VALUES(14,'Paquete 100 hojas blancas tam oficio',4);
+INSERT INTO detalle_ventas VALUES(15,'Paquete 100 hojas blancas tam carta',80);
+
+*-- Ahora, supongamos que queremos mostrar a que cliente realizamos la 
+venta con 'id_venta' = 12. Es el cliente 10008, y si chequeamos en la tabla
+'clientes' vemos que es el cliente 'Celeste Luna' y si queremos saber la
+descripcion de la compra, vemos en la tabla 'detalle_ventas' que se corresponde
+con 'Carton 100 lapices VICO'. 
+Para visualizar todo esta información junta, podemos realizar un 'JOIN' entre las
+3 tablas de la siguiente manera: --*
+
+SELECT c.nombre_cliente, v.id_venta, d.descripcion, d.cantidad
+FROM clientes c
+INNER JOIN ventas v
+ON c.id_cliente = v.id_cliente
+INNER JOIN detalle_ventas d
+ON v.id_venta = d.id_venta
+
