@@ -1,0 +1,65 @@
+Columnas SERIAL, NOT NULL y DEFAULT.
+
+CREATE TABLE deportistas(
+	id SMALLSERIAL PRIMARY KEY,
+	nombre VARCHAR(45) NOT NULL,
+	deporte VARCHAR(45),
+	fechainicio DATE DEFAULT '1900-01-01'
+);
+
+*-- Comenzamos creando la tabla 'deportistas' donde 'id' es de tipo
+SMALLSERIAL, es decir, un entero pequeño autoincrementable, o sea,
+que a medida que vamos insertando registros, el numero de id se
+autoincrementa. 
+Luego, la columna 'nombre' de tipo VARCHAR con un limite maximo de
+45 caracteres y de tipo 'NOT NULL', es decir, se va a obligar a 
+completar este campo al insertar registros. 
+Luego, la columna 'deporte' de tipo VARCHAR con un limite maximo de
+45 caracteres. 
+Y por ultimo, la columna 'fechainicio' de tipo DATE donde por defecto
+el valor es '1900-01-01'. --*
+
+*-- Ahora, realizamos la siguiente inserción: --*
+
+INSERT INTO deportistas(nombre, deporte) VALUES(null, 'natacion');
+
+*-- En este caso, no es necesario completar el registro 'id' porque es
+autoincrementable y el campo 'fechainicio' tampoco es necesario completarlo
+porque se asigna por defecto el valor '1900-01-01'. 
+Y obtenemos un error porque no podemos dejar el valor de nombre como 'null'.
+Entonces, realizamos el siguiente cambio: --*
+
+INSERT INTO deportistas(nombre, deporte) VALUES('Ramon Vazquez', null);
+
+*-- Podemos dejar la columna 'deporte' en 'null' porque no tiene ninguna 
+restriccion. --*
+
+*-- Si ejecutamos SELECT * FROM deportistas, observamos que el registro 'id'
+tiene un valor de 3 porque anteriormente intente realizar 2 inserciones
+fallidas. --*
+
+*-- Ahora, registramos un nuevo deportista en la tabla. --*
+
+INSERT INTO deportistas(nombre, deporte) VALUES('Carlos Gomez', 'natacion');
+
+*-- Si ejecutamos SELECT * FROM deportistas, observamos que el id se
+autoincremento y la fecha de inicio se coloca por defecto '1900-01-01'. --*
+
+*-- Ahora, eliminamos de la tabla 'deportistas' al registro que tiene 'id' igual
+a 3 ejecutando: --*
+
+DELETE FROM deportistas WHERE id=3
+
+*-- Ahora, insertamos el siguiente registro: --*
+
+INSERT INTO deportistas(nombre, deporte) VALUES('Laura Garza', 'natacion');
+
+*-- Si ejecutamos SELECT * FROM deportistas, observamos que el id 
+se autoincrementa a partir del ultimo registrado, es decir, se coloca 
+el valor en 5 porque el ultimo valor de 'id' registrado era el 4. 
+Ahora, si eliminamos el ultimo registro con valor de 'id' 5 y luego,
+insertamos un nuevo registro, el valor que va a tomar el 'id' es igual
+a 6, es decir, una vez insertado un registro se reserva para siempre
+el valor del 'id' aunque se elimina su correspondiente registro de la 
+tabla. --*
+
