@@ -1,0 +1,81 @@
+ON DELETE SET NULL.
+
+*-- Comenzamos eliminando la tabla 'personas'. --*
+
+DROP TABLE personas
+
+*-- Ahora, la creamos nuevamente con las siguientes columnas: --*
+
+CREATE TABLE personas(
+	personaid INTEGER PRIMARY KEY,
+	persona_nombre VARCHAR(45),
+	ciudad INTEGER
+);
+
+INSERT INTO personas VALUES 
+(100, 'Juan', 2),
+(101, 'Jose', 1),
+(102, 'Pepe', 3),
+(103, 'Miguel', 3),
+(104, 'Luis', 2)
+
+*-- Y creamos la tabla 'ciudades': --*
+
+CREATE TABLE ciudades(
+	ciudadid INTEGER PRIMARY KEY,
+	nombre_ciudad VARCHAR(45)
+);
+
+INSERT INTO ciudades VALUES 
+(1, 'Madrid'),
+(2, 'Barcelona'),
+(3, 'Benidorm'),
+(4, 'Valencia')
+
+*-- Ahora, agregamos como FK a la columna 'ciudadid' de la tabla 'personas': --*
+
+ALTER TABLE personas
+ADD CONSTRAINT FK_ciudad_id FOREIGN KEY (ciudad)
+REFERENCES ciudades(ciudadid)
+
+*-- Si queremos eliminar la ciudad con 'ciudadid' = 1: --*
+
+DELETE FROM ciudades WHERE ciudadid = 1
+
+*-- En este caso, no vamos a poder porque existen personas en la 
+tabla 'personas' con columna ciudad = 1. Para solucionar esto, comienzo
+eliminando la FK de la tabla 'ciudad': --*
+
+ALTER TABLE personas DROP CONSTRAINT FK_ciudad_id 
+
+*-- Ahora, la vuelvo a agregar con el siguiente comando: --*
+
+ALTER TABLE personas
+ADD CONSTRAINT FK_ciudad_id FOREIGN KEY (ciudad)
+REFERENCES ciudades(ciudadid)
+ON DELETE CASCADE ON UPDATE CASCADE
+
+*-- De esta manera, permitimos eliminar y actualizar cualquier valor de
+la columna 'ciudadid' y que impacte sin problemas en la tabla
+'personas'. --*
+
+DELETE FROM ciudades WHERE ciudadid = 1
+
+*-- Ahora, volvemos a quitar la FK de la columna 'ciudad' de 
+la tabla 'personas'--*
+
+ALTER TABLE personas DROP CONSTRAINT FK_ciudad_id 
+
+*-- Ahora, la vuelvo a agregar con el siguiente comando: --*
+
+ALTER TABLE personas
+ADD CONSTRAINT FK_ciudad_id FOREIGN KEY (ciudad)
+REFERENCES ciudades(ciudadid)
+ON DELETE SET NULL
+
+*-- Pero en el caso de eliminar una ciudad, todos los registros asociados
+en la tabla 'personas', se van a colocar en 'null' y ademas se va a eliminar
+el registro de 'ciudadid' = 3. --*
+
+DELETE FROM ciudades WHERE ciudadid = 3
+
