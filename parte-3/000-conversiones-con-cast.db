@@ -1,0 +1,109 @@
+Conversiones Con Cast
+
+*-- Comenzamos viendo el registro 100 de la siguiente manera: --*
+
+SELECT 100 AS numeroentero
+
+*-- Observamos que el tipo de 100 es 'INTEGER'. Ahora, si lo queremos
+convertir a tipo 'VARCHAR' lo podemos 'CASTEAR' de la siguiente manera: --*
+
+SELECT CAST(100 AS VARCHAR) AS num_entero_cast
+
+*-- Y observamos que ahora, el tipo de 'num_entero_cast' es 'character varying'. --*
+
+*-- Ahora, supongamos que queremos 'castear' un valor de tipo 'VARCHAR'
+a 'INTEGER'. --*
+
+SELECT CAST('hola' AS INTEGER) AS char_cast
+
+*-- Arroja un error porque no se puede castear un dato de tipo 'VARCHAR' a 'INTEGER'. --*
+
+*-- Otra manera de realizar un casteo sin utilizar el comando 'CAST' es mediante
+el simbolo :: --*
+
+SELECT 100::VARCHAR AS num_entero_cast
+
+*-- Ahora, creamos las siguientes tablas: --*
+
+CREATE TABLE tabla1(
+	dato1 INTEGER
+);
+
+CREATE TABLE tabla2(
+	dato2 VARCHAR(12)
+);
+
+*-- E insertamos un registro en la 'tabla2': --*
+
+INSERT INTO tabla2 VALUES('a')
+
+*-- Ahora, voy a intentar insertar el valor de la columna 'dato2' de la
+tabla 'tabla2', es decir, 'a' en la tabla 'tabla1'. --*
+
+INSERT INTO tabla1(dato1) SELECT dato2 FROM tabla2
+
+*-- Esto arroja un 'error' porque la tabla 'tabla1' admite en su columna
+'dato1' valores de tipo 'INTEGER' y queremos insertar un dato de tipo 'VARCHAR'. --*
+
+*-- Por lo tanto, para poder realizar la insercion en la 'tabla1' de manera
+satisfactoria, vamos a realizar un casteo sobre la columna 'dato2' de la
+'tabla2' de la siguiente manera: --*
+
+INSERT INTO tabla1(dato1) SELECT dato2::INTEGER FROM tabla2
+
+*-- Sin embargo, el caracter 'a' no se puede castear a entero. Por lo que 
+primero limpiamos la 'tabla2' (TRUNCATE tabla2) y luego,
+realizamos la inserción de un valor numerico pero de tipo caracter. --*
+
+INSERT INTO tabla2 VALUES('500')
+
+INSERT INTO tabla1(dato1) SELECT dato2::INTEGER FROM tabla2
+
+*-- Insertando de la misma manera que hicimos anteriormente, ahora se va a
+castear el valor 500 en la tabla 'tabla1'. --*
+
+*-- Por lo tanto, solo vamos a poder castear combinaciones de caracteres
+numericos a valores de tipo 'VARCHAR'. --*
+
+*-- Ahora, si queremos convertir/castear un tipo de dato 'STRING' a 'DATE'
+ejecutamos el siguiente comando: --*
+
+SELECT CAST('1990-01-18' AS DATE)
+
+*-- Tambien podemos realizar el casteo de la siguiente manera: --*
+
+SELECT '1990-01-18'::DATE AS date_varchar_cast
+
+*-- Para este nuevo ejercicio, vamos a eliminar las tablas 'tabla1' y 'tabla2'. --*
+
+DROP TABLE tabla1, tabla2
+
+*-- Ahora, las creamos nuevamente: --*
+
+CREATE TABLE tabla1(
+	fecha1 DATE
+);
+
+CREATE TABLE tabla2(
+	texto VARCHAR(45)
+);
+
+*-- E insertamos los siguientes registros: --*
+
+INSERT INTO tabla2 VALUES 
+('2020-03-15'),
+('2020-03-15'),
+('2020-05-15'),
+('2020-06-15')
+
+*-- Por lo tanto, si queremos insertar los registros de la tabla
+'tabla2' en la columna 'fecha1' de la tabla 'tabla1', vamos a 
+realizar el casteo de la siguiente manera: --*
+
+INSERT INTO tabla1(fecha1) SELECT texto::DATE FROM tabla2
+
+*-- Ahora, para realizar conversiones de tipo 'STRING' a 
+tipo 'DOUBLE PRECISION', la vamos a realizar de la 
+siguiente manera: --*
+
+SELECT '200.5'::DOUBLE PRECISION
