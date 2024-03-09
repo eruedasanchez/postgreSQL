@@ -1,0 +1,17 @@
+IN NOT IN Operators.
+
+*-- Comenzamos viendo los registros de la tabla 'alumnos' --*
+
+SELECT * FROM alumnos
+
+*-- Y vemos que la tabla posee la columna 'carrera'. Entonces, queremos mostrar
+todos los alumnos en donde la carrera pertenezcan a 'Mercadotecnia', 'Psicologia'
+o 'Biologia'. --*
+
+SELECT * FROM alumnos WHERE carrera IN ('Mercadotecnia', 'Psicologia', 'Biologia')
+
+*-- Y si queremos ver todos aquellos alumnos que no pertenecen a las carreras de
+'Mercadotecnia', 'Psicologia' o 'Biologia' utilizamos el operador NOT IN. --*
+
+SELECT * FROM alumnos WHERE carrera NOT IN ('Mercadotecnia', 'Psicologia', 'Biologia')
+
