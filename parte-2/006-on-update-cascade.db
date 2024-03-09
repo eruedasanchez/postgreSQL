@@ -1,0 +1,161 @@
+ON UPDATE CASCADE. Modificar en cascada.
+
+*-- Comenzamos eliminando la tabla 'libros' y 'editorial' porque las
+vamos a necesitar crear nuevamente con nuevos datos. --*
+
+DROP TABLE libros
+DROP TABLE editorial
+
+*-- Ahora, vamos a crear nuevamente la tabla 'libros' y 'editorial'. --*
+
+CREATE TABLE libros(
+	codigo INTEGER PRIMARY KEY,
+	titulo VARCHAR(40),
+	autor VARCHAR(40),
+	codigoeditorial INTEGER,
+	precio DECIMAL(5,2),
+	cantidad SMALLINT
+);
+
+*-- E insertamos los siguientes registros: --*
+
+INSERT INTO libros(codigo,titulo, autor,codigoeditorial,precio,cantidad)
+VALUES(10001,'el aleph','Borges',220,450,5),
+(10002,'El conejito','Flors',221,200.5,2),
+(10003,'El elefante','De la Rosa',222,100.5,3),
+(10004,'Sor Juana','Juan Galileo',223,400,4),
+(10005,'La Bella','Flors',224,500.5,1),
+(10006,'Los zapatos de Juana','Camilo Rosas',225,100,1),
+(10007,'Tasa de café','Anastacia Arco',226,200.5,1),
+(10008,'Los pecesitos','Cristina Tomás',227,100.5,2),
+(10009,'El sueño dorado','Ana Camello',228,99.9,2),
+(10010,'Andrés','Andrés Camareno',229,200.5,4),
+(10011,'Tasa de café 2','Anastacia Arco',230,200.5,1),
+(10012,'LA tortuga','María Booleana',231,85.9,null),
+(10013,'a felicidad','Gise Esmeralda',232,600.5,null),
+(10014,'Encontrando a Nemo',',Marcos Marcos',233,200.5,2),
+(10015,'El arcoiris','Antonio Town',234,800.5,null),
+(10016,'Programación web extensa','Mauricio Pérez',235,100.5,null),
+(10017,'Sin ti','Lorena Garza',236,200.5,null),
+(10018,'Los sueños de Andrea','Borges',238,450,5),
+(10019,'Antonieta','Flors',239,200.5,2),
+(10020,'Cocinando sueños','De la Rosa',240,100.5,3),
+(10021,'El perdedor','Juan Galileo',241,400,4),
+(10022,'Doña Juana','Flors',232,500.5,1),
+(10023,'Caperuza busa','Camilo Rosas',228,100,1),
+(10024,'Es resplandor','Anastacia Arco',226,200.5,1),
+(10025,'Volver a comenzar','Cristina Tomás',225,100.5,2),
+(10026,'La sonrisa de Amalia','Ana Camello',228,99.9,2),
+(10027,'El piano de Jose','Andrés Camareno',229,238.5,4),
+(10028,'El huerto del terror','Anastacia Arco',221,200.5,1),
+(10029,'El payaso de las tinieblas','María Booleana',221,85.9,null),
+(10030,'El bals de la esperanza','Gise Esmeralda',220,600.5,null),
+(10031,'Buscando a Hyun',',Marcos Marcos',226,200.5,2),
+(10032,'El arcoiris II','Antonio Town',221,800.5,null),
+(10033,'Programación en Java a fondo','Mauricio Pérez',227,100.5,null),
+(10034,'Calculo I','Lorena Garza',232,200.5,null),
+(10035,'Aprender CSS con Flor','Gise Esmeralda',220,600.5,null),
+(10036,'MySQL a fondo',',Marcos Marcos',226,200.5,2),
+(10037,'Calculo II','Antonio Town',221,800.5,null),
+(10038,'Programación en Java a fondo II','Mauricio Pérez',227,100.5,null),
+(10039,'Calculo III','Lorena Garza',232,200.5,null);
+
+*-- Ahora, creamos la tabla 'editorial' e insertamos los siguientes registros: --*
+
+CREATE TABLE editorial(
+	codigo_editorial INTEGER PRIMARY KEY,
+	nombre VARCHAR(45),
+	ciudad VARCHAR(45),
+	estado VARCHAR(45)
+); 
+
+INSERT INTO editorial VALUES
+(220,'Mexico','Tijuana','Baja California'),
+(221,'El buen lector','Celaya','Guanajuato'),
+(222,'El capricho','Leon','Guanajuato'),
+(223,'Forever 89','Mazatlan','Sinaloa'),
+(224,'1950','Hermosillo','Sonora'),
+(225,'Violeta','Navojoa','Sonora'),
+(226,'Esperanza','Monterrey','Nuevo Leon'),
+(227,'La luna','Monterrey','Nuevo Leon'),
+(228,'Horizonte del mañana','Puebla','Puebla'),
+(229,'Las flores','Guadalajara','Jalisco'),
+(230,'Renacer','Puerto Vallarta','Jalisco'),
+(231,'Celeste','Tepic','Nayarit'),
+(232,'Antonios','Guadalajara','Jalisco'),
+(233,'Madrid','Tijuana','Baja California'),
+(234,'Paris','Mexicali','Baja California'),
+(235,'California','Monterrey','Nuevo Leon'),
+(236,'Monterrey','Monterrey','Nuevo Leon'),
+(237,'Editorial Castellana','Guadalajara','Jalisco'),
+(238,'La aventura lectora','Monterrey','Nuevo Leon'),
+(800,'Los ojos del lector','Tijuana','Baja California'),
+(801,'El puerto','Celaya','Guanajuato'),
+(802,'El intelectual','Leon','Guanajuato'),
+(803,'Cartoons','Mazatlan','Sinaloa'),
+(804,'Renacer','Hermosillo','Sonora'),
+(805,'La casita del lector','Navojoa','Sonora'),
+(806,'La hermosa','Monterrey','Nuevo Leon');
+
+*-- Por lo tanto, vamos a agregar en la tabla 'libros', la columna 
+'codigoeditorial' como FK de la siguiente manera: --*
+
+ALTER TABLE libros
+ADD CONSTRAINT FK_cod_editorial FOREIGN KEY (codigoeditorial)
+REFERENCES editorial(codigo_editorial)
+
+*-- Pero al intentar realizar esto, tenemos un error porque  
+la clave 239 no se encuentra definida en la columna 
+'codigo_editorial' de la tabla 'editorial'. Entonces, eliminamos
+el codigo editorial = 239 de la tabla 'libros'. 
+Analogo, para los casos 240 y 241 --*
+
+DELETE FROM libros WHERE codigoeditorial = 239 
+DELETE FROM libros WHERE codigoeditorial = 240
+DELETE FROM libros WHERE codigoeditorial = 241
+
+*-- Ahora, supongamos que queremos eliminar el 'codigo_editorial' = 220 
+de la tabla 'editorial' de la siguiente manera: --*
+
+DELETE FROM editorial WHERE codigo_editorial = 220 
+
+*--Observamos que no se puede eliminar porque tiene libros relacionados
+con el mismo codigo en la tabla 'libros'. Para solucionar esto, vamos a
+aplicar 'ON DELETE CASCADE'. Pero primero, eliminamos la FK. --*
+
+ALTER TABLE libros DROP CONSTRAINT FK_cod_editorial 
+
+*-- Aplicamos 'ON DELETE CASCADE'. --*
+
+ALTER TABLE libros
+ADD CONSTRAINT FK_cod_editorial FOREIGN KEY (codigoeditorial)
+REFERENCES editorial(codigo_editorial)
+ON DELETE CASCADE
+
+*-- Ahora, si eliminamos de la tabla 'editorial', el 'codigo_editorial' = 220
+se va a eliminar dicho codigo de la tabla 'editorial' y todos los registros
+asociados a dicho codigo en la tabla 'libros'. --*
+
+DELETE FROM libros WHERE codigoeditorial = 220
+
+*-- Ahora, si queremos actualizar el 'codigo_editorial' = 221 de la tabla
+'editorial' por 'codigo_editorial' = 5000, lo realizamos de la siguiente
+manera: --*
+
+UPDATE editorial SET codigo_editorial = 5000 WHERE codigo_editorial = 221
+
+*-- Obtenemos un error porque solo seteamos la columna 'codigo_editorial'
+para 'ON DELETE CASCADE' y no para 'ON UPDATE CASCADE'.
+Esto lo solucionamos de la siguiente manera: --*
+
+ALTER TABLE libros DROP CONSTRAINT FK_cod_editorial 
+
+ALTER TABLE libros
+ADD CONSTRAINT FK_cod_editorial FOREIGN KEY (codigoeditorial)
+REFERENCES editorial(codigo_editorial)
+ON DELETE CASCADE
+ON UPDATE CASCADE
+
+*-- Ahora, ejecutamos sin problemas la siguiente linea: --*
+
+UPDATE editorial SET codigo_editorial = 5000 WHERE codigo_editorial = 221
