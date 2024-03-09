@@ -1,0 +1,133 @@
+ON DELETE CASCADE. Eliminar en cascada.
+
+*-- Comenzamos creando las tablas 'empleados' y 'puestos'. --*
+
+CREATE TABLE empleados(
+	idempleado INTEGER PRIMARY KEY,
+	nombre VARCHAR(45),
+	puestoid INTEGER,
+	CONSTRAINT FK_id_puestos FOREIGN KEY (puestoid)
+	REFERENCES puestos(puestoid)
+);
+
+CREATE TABLE puestos(
+	puestoid INTEGER PRIMARY KEY,
+	nombrepuesto VARCHAR(45)
+);
+
+*-- Donde la columna 'puestoid' de la tabla 'empleados' es una FK
+dado que referencia a la columna 'puestoid' de la tabla 'puestos'. 
+Es decir, no se van a poder insertar valores para 'puestoid' que no
+se encuentren definidos en la columna 'puestoid' de la tabla 
+'puestos'. --*
+
+*-- Ahora, realizamos las siguientes inserciones: --*
+
+INSERT INTO empleados VALUES(1000,'Juan',1);
+INSERT INTO empleados VALUES(1001,'Jose',1);
+INSERT INTO empleados VALUES(1002,'Daniel',4);
+INSERT INTO empleados VALUES(1003,'Laura',2);
+INSERT INTO empleados VALUES(1004,'Carlos',1);
+INSERT INTO empleados VALUES(1005,'Daniel',1);
+INSERT INTO empleados VALUES(1006,'Luna',3);
+INSERT INTO empleados VALUES(1007,'Oscar',5);
+INSERT INTO empleados VALUES(1008,'Joao',6);
+INSERT INTO empleados VALUES(1009,'Gabriel',7);
+INSERT INTO empleados VALUES(1010,'Pedro',7);
+INSERT INTO empleados VALUES(1011,'Jesus',2);
+INSERT INTO empleados VALUES(1012,'Linda',6);
+INSERT INTO empleados VALUES(1013,'Ana',7);
+INSERT INTO empleados VALUES(1014,'Maria',7);
+INSERT INTO empleados VALUES(1015,'Jose Carlos',2);
+
+INSERT INTO puestos VALUES(1,'Limpieza');
+INSERT INTO puestos VALUES(2,'Secretaria');
+INSERT INTO puestos VALUES(3,'Cajera');
+INSERT INTO puestos VALUES(4,'Facturista');
+INSERT INTO puestos VALUES(5,'Capturista');
+INSERT INTO puestos VALUES(6,'Contador');
+INSERT INTO puestos VALUES(7,'RH');
+INSERT INTO puestos VALUES(8,'Gerente');
+INSERT INTO puestos VALUES(9,'Subgerente');
+INSERT INTO puestos VALUES(10,'Jardinero');
+INSERT INTO puestos VALUES(11,'Office boy');
+INSERT INTO puestos VALUES(12,'Cocinero personal');
+
+*-- Ahora, intentamos realizar la siguiente insercion: --*
+
+INSERT INTO empleados VALUES(1016, 'Ulises', 13)
+
+*-- Y obtenemos un 'error' porque el 'puestoid' = 13 no se
+encuentra definido en la tabla 'puestos' (solo se encuentran
+en el rango [1-12]). --*
+
+*-- Lo corrigo de la siguiente manera: --*
+
+INSERT INTO empleados VALUES(1016, 'Ulises', 8)
+
+*-- Ahora, intentamos eliminar de la tabla 'puestos', el puesto con
+'puestoid' = 1. --*
+
+DELETE FROM puestos WHERE puestoid = 1 
+
+*-- Pero obtenemos un 'error' porque la columna 'puestoid' está siendo
+referenciada por la tabla 'empleados' en la columna 'puestoid'. 
+Por lo tanto, no podemos eliminar un 'puestoid' de la tabla 'puestos'
+porque la columna 'puestoid' de la tabla 'empleados' depende de ella. --*
+
+*-- Observemos que si queremos eliminar un valor de 'puestoid' que no se
+encuentra definido en la tabla 'empleados', se va a poder eliminar sin
+problemas. Por ejemplo, si tomo 'puestoid' = 12. --*
+
+DELETE FROM puestos WHERE puestoid = 12 
+DELETE FROM puestos WHERE puestoid = 11 
+DELETE FROM puestos WHERE puestoid = 10 
+DELETE FROM puestos WHERE puestoid = 9 
+
+*-- Para solucionar esto, vamos a utilizar el concepto de 'ON CASCADE'.
+Para ello, primero eliminamos la FK de la columna 'puestoid' cuando creamos
+la tabla 'empleados': --*
+
+CREATE TABLE empleados(
+	idempleado INTEGER PRIMARY KEY,
+	nombre VARCHAR(45),
+	puestoid INTEGER,
+	CONSTRAINT FK_id_puestos FOREIGN KEY (puestoid)
+	REFERENCES puestos(puestoid)
+);
+
+*-- De la siguiente manera: --*
+
+ALTER TABLE empleados DROP CONSTRAINT FK_id_puestos
+
+*-- Por lo tanto, ahora podemos insertar empleados
+con cualquier valor de 'puestoid'. --*
+
+INSERT INTO empleados VALUES(1017, 'Ramona', 100)
+
+*-- Lo eliminamos para poder explicar mejor el concepto de 'ON DELETE CASCADE'. --*
+
+DELETE FROM empleados WHERE puestoid = 100
+
+*-- Ahora, volvemos a insertar la FK a la columna 'puestoid' 
+de la tabla 'empleados' como habiamos hecho originalmente pero agregando
+la linea 'ON DELETE CASCADE ON UPDATE CASCADE' va a suceder que
+cuando intentemos eliminar un 'puestoid' que existe en la tabla
+'empleados', se va eliminar tanto de la tabla 'puestos' como de
+la tabla 'empleados'. --*
+
+ALTER TABLE empleados
+ADD CONSTRAINT FK_id_puestos FOREIGN KEY (puestoid)
+REFERENCES puestos(puestoid)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+*-- Si ejecutamos SELECT * FROM empleados WHERE puestoid = 1,
+observamos que son los empleados con idempleado 1000, 1001, 1004 y 
+1005. --*
+
+*-- Ahora, si eliminamos de la tabla 'puestos' el puesto con 
+'puestoid' = 1, observamos que se elimina el 'puestoid' = 1 de
+la tabla 'puestos' y tambien todos aquellos registros de la 
+tabla 'empleados' con 'puestoid' = 1 --*
+
+DELETE FROM puestos WHERE puestoid = 1
