@@ -1,0 +1,6 @@
+Operador DIFERENTE
+
+*-- Ahora, vamos a mostrar a todos los alumnos en los cuales su carrera 
+sea diferente (<>) a 'Mercadotecnia'. --*
+
+SELECT * FROM alumnos WHERE carrera <>'Mercadotecnia' ORDER BY carrera
