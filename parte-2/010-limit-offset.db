@@ -1,0 +1,20 @@
+Clausulas LIMIT y OFFSET.
+
+*-- Comenzamos contando la cantidad de alumnos que hay en la tabla 'alumnos'. --*
+
+SELECT COUNT(*) AS cantidad_alumnos FROM alumnos
+
+*-- Vemos que la tabla tiene 23 alumnos registrados. --*
+
+*-- Ahora, si solo queremos seleccionar los primeros 5 alumnos/registros
+correspondientes a la tabla 'alumnos', vamos a utilizar la clausula
+'LIMIT' de la siguiente manera: --*
+
+SELECT * FROM libros LIMIT 5
+
+*-- Si además, queremos especificar que se muestren los primeros 5 registros de
+la tabla 'alumnos' pero a partir del segundo registro, utilizamos la clausula 'OFFSET'
+de la siguiente manera: --*
+
+SELECT * FROM libros LIMIT 5 OFFSET 2
+
