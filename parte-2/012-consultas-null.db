@@ -1,0 +1,6 @@
+Consultas con valores NULL.
+
+*-- Si queremos mostrar aquellos registros de la tabla 'libros' en los cuales
+la cantidad es 'null' ejecutamos el siguiente comando: --*
+
+SELECT * FROM libros WHERE cantidad IS NULL

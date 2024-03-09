@@ -1,0 +1,53 @@
+Restricciones UNIQUE - CHECK.
+
+*-- La restriccion 'UNIQUE' se va a utilizar cuando no queremos que los
+valores que se encuentren en una columna se puedan duplicar. --*
+
+*-- Comenzamos eliminando la tabla 'personas'. --*
+
+DROP TABLE personas
+
+*-- Ahora, creamos nuevamente la tabla 'personas'. --*
+
+CREATE TABLE personas(
+	idpersona INTEGER PRIMARY KEY,
+	nombre VARCHAR(45) NOT NULL,
+	telefono VARCHAR(10) UNIQUE,
+	dni VARCHAR(8) UNIQUE 
+);
+
+*-- Insertamos los siguientes registros en la tabla 'personas'. --*
+
+INSERT INTO personas VALUES(1, 'Romeo Lopez', '2222222222', '12345670')
+INSERT INTO personas VALUES(2, 'Maria Lopez', '2222222220', '12345671')
+
+*-- Ahora, vamos a ver la restriccion 'CHECK'. Para ello, comenzamos viendo
+la tabla 'alumnos'. --*
+
+SELECT * FROM alumnos
+
+*-- Luego, la tabla 'alumnos' tiene una columna 'promedio'. Si queremos
+que el promedio este en el rango [0-100], vamos a modificar la columna
+'promedio' de la siguiente manera: --*
+
+ALTER TABLE alumnos 
+ADD CONSTRAINT CK_alumnos_prom 
+CHECK(promedio >= 0 AND promedio <= 100)
+
+*-- Ahora, intentamos insertar el siguiente registro: --*
+
+INSERT INTO alumnos VALUES(1023, 'Juan', 'Perez', 'Lopez', '1998-06-05', '2020-08-05', '2222222222', 'Psicologia', 1590.2)
+
+*-- Obtenemos un 'ERROR' porque se está chequeando que el promedio se encuentre en el rango [0,100]. --*
+
+*-- Corregimos el promedio y podemos insertar sin problemas el registro. --*
+
+INSERT INTO alumnos VALUES(1023, 'Juan', 'Perez', 'Lopez', '1998-06-05', '2020-08-05', '2222222222', 'Psicologia', 100)
+
+*-- Vale mencionar que la restriccion 'CHECK' sirve tanto para 'INSERT' como para 'UPDATE'
+
+
+
+
+ 
+ 
