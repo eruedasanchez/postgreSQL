@@ -1,0 +1,187 @@
+JOINS con 5 tablas. 
+
+*-- Comenzamos eliminando las tablas 'clientes', 'ventas', 'detalle_ventas'. --*
+
+DROP TABLE clientes, ventas, detalle_ventas
+
+*-- Para este ejercicio, vamos a crear las tablas 'ventas', 'clientes', 
+'detalleventas', 'vendedor' y 'productos' donde la tabla 'ventas' tiene
+una columna 'vendedorid' que está relacionada con la columna 'vendedorid' de
+la tabla 'vendedor' por lo que la columna 'vendedorid' de la tabla 'ventas' 
+resulta ser la 'FOREIGN KEY' por lo que para poder registrar nuevas ventas
+debemos necesariamente ingresar un valor de 'vendedorid' que este definido
+en la columna 'vendedorid' de la tabla 'vendedor'.
+Ahora, de manera analoga, observamos que la columna 'clienteid' de la tabla 
+'ventas' está relacionada con la columna 'clienteid' de la tabla 'clientes'
+por lo que la columna 'clienteid' de la tabla 'ventas' resulta ser 'FOREIGN KEY'.
+Por ultimo, la columna 'productoid' de la tabla 'detalleventas' está relacionada 
+con la columna 'productoid' de la tabla 'productos' por lo que la columna 'productoid'
+de la tabla 'detalleventas' resulta ser la 'FK' donde ademas la columna 'ventaid'
+de la tabla 'ventas' debe tener valores que se encuentren definidos en la
+columna 'ventaid' de la tabla 'detalleventas'. --*
+
+*-- Por lo tanto, comenzamos creando las 5 tablas --*
+
+CREATE TABLE ventas(
+	ventaid INTEGER PRIMARY KEY,
+	vendedorid INTEGER,
+	clienteid INTEGER,
+	descuento DECIMAL(3,2),
+	CONSTRAINT FK_id_vendedor FOREIGN KEY (vendedorid)
+	REFERENCES vendedor(vendedorid),
+	CONSTRAINT FK_id_cliente FOREIGN KEY (clienteid)
+ 	REFERENCES clientes(clienteid)
+);
+
+CREATE TABLE clientes(
+	clienteid INTEGER PRIMARY KEY,
+	nombre VARCHAR(45),
+	tel_cliente BIGINT
+);
+
+CREATE TABLE detalle_ventas(
+	ventaid INTEGER PRIMARY KEY,
+	cantidad INTEGER,
+	productoid INTEGER,
+	CONSTRAINT FK_id_venta FOREIGN KEY (ventaid)
+	REFERENCES ventas(ventaid),
+	CONSTRAINT FK_id_producto FOREIGN KEY (productoid)
+	REFERENCES productos(productoid)
+);
+
+CREATE TABLE vendedor(
+	vendedorid INTEGER PRIMARY KEY,
+	nombre_vendedor VARCHAR(45),
+	tel_vendedor BIGINT
+);
+
+CREATE TABLE productos(
+	productoid INTEGER PRIMARY KEY,
+	descripcion VARCHAR(100),
+	precio DOUBLE PRECISION
+);
+
+*-- Como las tablas 'clientes', 'vendedor' y 'productos' no tienen
+asignadas FK, podemos comenzar a insertar registros en ellas. --* 
+
+INSERT INTO vendedor VALUES(8501,'Agustin Perez',2222222222);
+INSERT INTO vendedor VALUES(8502,'Carmela Sanchez',3322222222);
+INSERT INTO vendedor VALUES(8503,'Laura Lara',2248222222);
+INSERT INTO vendedor VALUES(8504,'Laura Esparza',2278222222);
+INSERT INTO vendedor VALUES(8505,'Agustina Perez',2222222222);
+INSERT INTO vendedor VALUES(8506,'Gabriela Sanchez',3322222222);
+INSERT INTO vendedor VALUES(8507,'Carmen Lara',2248222222);
+INSERT INTO vendedor VALUES(8508,'Isaura Esparza',2278222222);
+
+*-- Ahora, ingresamos los siguientes datos en la tabla 'productos': --*
+
+INSERT INTO productos VALUES(100,'Lata de atun Medusa 400 g',50.2);
+INSERT INTO productos VALUES(101,'Lata de camaron condimentado Medusa 400 g',120.5);
+INSERT INTO productos VALUES(102,'Lata de camaron sin condimentos Medusa 400 g',112);
+INSERT INTO productos VALUES(103,'Lata de ostiones Medusa 400 g',100.1);
+INSERT INTO productos VALUES(104,'Lata de frijoles refritos 500 g',25);
+INSERT INTO productos VALUES(105,'Lata de atun Medusa 1000 g',100);
+INSERT INTO productos VALUES(106,'Lata de camaron condimentado Medusa 1000 g',200);
+INSERT INTO productos VALUES(107,'Lata de carne asada Medusa 500 g',80);
+INSERT INTO productos VALUES(108,'Lata de refresco Medusa 300 ml',15);
+INSERT INTO productos VALUES(109,'Refresco Medusa 600 ml',18);
+INSERT INTO productos VALUES(110,'Refresco Medusa 1L',22);
+INSERT INTO productos VALUES(111,'Refresco Medusa 2L',28);
+
+*-- Ahora, insertamos datos en la tabla 'clientes': --*
+
+INSERT INTO clientes VALUES(10000,'Luis Perez',2234567834);
+INSERT INTO clientes VALUES(10001,'Carlos Valderde',4444567834);
+INSERT INTO clientes VALUES(10002,'Daniel Alvarez',1214567834);
+INSERT INTO clientes VALUES(10003,'Alvaro Luna',1234588834);
+INSERT INTO clientes VALUES(10004,'Laura Gomez',1234589934);
+INSERT INTO clientes VALUES(10005,'Adal Sanchez',1774567834);
+INSERT INTO clientes VALUES(10006,'Fausto Esparza',1234557834);
+INSERT INTO clientes VALUES(10007,'Gabriel Lopez',1234566634);
+INSERT INTO clientes VALUES(10008,'Juan Gamez',1234564534);
+INSERT INTO clientes VALUES(10009,'Laura Maria Lopez',1234567454);
+INSERT INTO clientes VALUES(10010,'Antonio Lopez',1234564234);
+INSERT INTO clientes VALUES(10011,'Adamari Perez',1234568934);
+INSERT INTO clientes VALUES(10012,'Antonieta Nieves',1844567834);
+INSERT INTO clientes VALUES(10013,'Roberto Perez',1233367834);
+INSERT INTO clientes VALUES(10014,'Anastasia Cervantes',1239967834);
+INSERT INTO clientes VALUES(10015,'Claudina Garza',1234560034);
+INSERT INTO clientes VALUES(10016,'Yesenia Delgado',1230067834);
+INSERT INTO clientes VALUES(10017,'Maria Delgado',1234567004);
+INSERT INTO clientes VALUES(10018,'Carlos Gomez',1234567800);
+INSERT INTO clientes VALUES(10019,'Luis Sanchez',1234524834);
+INSERT INTO clientes VALUES(10020,'Claudia Espino',1234525834);
+INSERT INTO clientes VALUES(10021,'Raul Gamez',1234562834);
+INSERT INTO clientes VALUES(10022,'Daniela Perez',1234127834);
+INSERT INTO clientes VALUES(10023,'Graciela Sanchez',1268567834);
+INSERT INTO clientes VALUES(10024,'Luis Perez Garza',1234887834);
+
+*-- Ahora, como ya ingresamos registros en la tablas 'vendedor' y 'clientes',
+y la tabla 'ventas' tiene las dos FK relacionadas a estas tablas, podemos
+realizar inserciones en las tabla 'ventas':
+
+INSERT INTO ventas VALUES(1,8501,10000,5);
+INSERT INTO ventas VALUES(2,8501,10000,5);
+INSERT INTO ventas VALUES(3,8502,10001,5);
+INSERT INTO ventas VALUES(4,8503,10002,5);
+INSERT INTO ventas VALUES(5,8501,10001,5);
+INSERT INTO ventas VALUES(6,8501,10004,5);
+INSERT INTO ventas VALUES(7,8502,10008,5);
+INSERT INTO ventas VALUES(8,8501,10007,5);
+INSERT INTO ventas VALUES(9,8504,10005,5);
+INSERT INTO ventas VALUES(10,8504,10004,5);
+INSERT INTO ventas VALUES(11,8502,10004,5);
+INSERT INTO ventas VALUES(12,8501,10006,5);
+INSERT INTO ventas VALUES(13,8503,10005,5);
+INSERT INTO ventas VALUES(14,8504,10006,5);
+INSERT INTO ventas VALUES(15,8501,10001,5);
+
+*-- Por ultimo, como ya tengo registros insertados en la tabla 'ventas',
+puedo insertar registros en la tabla 'detalle_ventas'. --*
+
+INSERT INTO detalle_ventas VALUES(1,4,111);
+INSERT INTO detalle_ventas VALUES(2,1,109);
+INSERT INTO detalle_ventas VALUES(3,2,100);
+INSERT INTO detalle_ventas VALUES(4,1,101);
+INSERT INTO detalle_ventas VALUES(5,8,103);
+INSERT INTO detalle_ventas VALUES(6,25,102);
+INSERT INTO detalle_ventas VALUES(7,4,111);
+INSERT INTO detalle_ventas VALUES(8,1,110);
+INSERT INTO detalle_ventas VALUES(9,2,108);
+INSERT INTO detalle_ventas VALUES(10,3,107);
+INSERT INTO detalle_ventas VALUES(11,3,104);
+INSERT INTO detalle_ventas VALUES(12,8,111);
+INSERT INTO detalle_ventas VALUES(13,4,110);
+INSERT INTO detalle_ventas VALUES(14,100,111);
+INSERT INTO detalle_ventas VALUES(15,4,111);
+
+*-- Por lo tanto, en el siguiente caso vamos a relacionar las tablas 'clientes', 
+'ventas' y 'vendedor'. Vamos a mostrar aquellos clientes que se encuentren definidos
+en la tabla ventas con la informacion de ventas solicitadas. 
+Y luego, la tabla resultante la vamos a combinar con la tabla vendedor en aquellos
+registros donde los id de vendedores coincidan en ambas tablas. --* 
+
+SELECT c.clienteid, c.nombre, vt.ventaid, vt.descuento, vd.vendedorid, vd.nombre_vendedor
+FROM clientes c
+INNER JOIN ventas vt
+ON vt.clienteid = c.clienteid
+INNER JOIN vendedor vd
+ON vd.vendedorid = vt.vendedorid
+
+*-- Por ultimo, vamos a unir las tablas 'detalle_ventas' y 'productos' 
+de acuerdo a los 'productoid' que se encuentren defindos en la tabla
+'detalle_ventas'. --* 
+
+SELECT c.clienteid, c.nombre, 
+vt.ventaid, vt.descuento, 
+vd.vendedorid, vd.nombre_vendedor,
+dv.cantidad, p.descripcion
+FROM clientes c
+INNER JOIN ventas vt
+ON vt.clienteid = c.clienteid
+INNER JOIN vendedor vd
+ON vd.vendedorid = vt.vendedorid
+INNER JOIN detalle_ventas dv
+ON dv.ventaid = vt.ventaid
+INNER JOIN productos p
+ON dv.productoid = p.productoid
