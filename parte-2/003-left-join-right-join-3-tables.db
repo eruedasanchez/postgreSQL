@@ -1,0 +1,73 @@
+LEFT JOIN - RIGHT JOIN con 3 tablas.
+
+SELECT l.titulo, l.precio, a.nombre_autor, e.nombreeditorial, e.ciudad  
+FROM autores AS a
+INNER JOIN libros AS l
+ON l.codigoautor = a.codigo_autor  
+INNER JOIN editorial as e
+ON l.codigoeditorial = e.codigo_editorial 
+WHERE l.precio <= 200
+
+*-- Comenzamos mostrando los distintos 'codigoautor' de la tabla 'libros'. --*
+
+SELECT DISTINCT codigoautor FROM libros ORDER BY codigoautor
+
+*-- Vemos que existen los codigos del 1-9 (menos el 6) y del 80-88. --*
+
+*-- Ahora, vemos los codigos de autores de la tabla 'autores' y se
+encuentran autores definidos del 1-15 y no del 80-88.
+Por lo tanto, en la tabla 'autores' hay codigos definidos que no 
+existen en la tabla 'libros' --*
+
+*-- Por lo tanto, si ejecutamos un 'LEFT JOIN', va a tener prioridad la 
+tabla 'autores' y por lo tanto, se van a mostrar todos los 'codigo_autor'
+inclusive para aquellos libros que no tengan definidos codigos
+(apareceran en 'null').  --*
+
+SELECT l.titulo, l.precio, l.codigoeditorial, a.nombre_autor, a.codigo_autor  
+FROM autores AS a
+LEFT JOIN libros AS l
+ON l.codigoautor = a.codigo_autor  
+ORDER BY a.codigo_autor
+
+*-- Ahora, a esta consulta agregamos la tabla 'editorial' de la siguiente manera: --*
+
+SELECT l.titulo, l.precio, l.codigoeditorial, 
+a.nombre_autor, a.codigo_autor, 
+e.codigo_editorial, e.nombreeditorial, e.ciudad  
+FROM autores AS a
+LEFT JOIN libros AS l
+ON l.codigoautor = a.codigo_autor  
+RIGHT JOIN editorial as e
+ON l.codigoeditorial = e.codigo_editorial 
+ORDER BY e.codigo_editorial
+
+*-- Por lo tanto, al ejecutar un 'RIGHT JOIN', la prioridad pasa a tenerla
+la tabla 'editorial' y se van a mostrar todos los códigos editoriales
+inclusive de aquellos que no tengan libros asignados. --*
+
+*-- Ahora, si intercambiamos el 'LEFT JOIN' por el 'RIGHT JOIN', la
+prioridad la va a tener la tabla 'libros' y se muestra para cada libro,
+su correspondiente autor y codigo. En caso de no tenerlos definidos,
+se coloca 'null'. --*
+
+SELECT l.codigolibro, l.titulo, a.nombre_autor, a.codigo_autor
+FROM autores AS a
+RIGHT JOIN libros AS l
+ON l.codigoautor = a.codigo_autor  
+ORDER BY l.codigolibro
+
+*-- Ahora, si agregamos un 'LEFT JOIN', la prioridad la va a seguir teniendo
+la tabla izquierda, o sea, la tabla 'libros' y se va a asociar a cada libro,
+su correspondiente 'codigo_editorial' y 'nombreeditorial' y en el caso de
+que no este definida, se asignará 'null'. --*
+
+SELECT l.codigolibro, l.titulo, 
+a.nombre_autor, a.codigo_autor,
+e.codigo_editorial, e.nombreeditorial
+FROM autores AS a
+RIGHT JOIN libros AS l
+ON l.codigoautor = a.codigo_autor  
+LEFT JOIN editorial AS e
+ON l.codigoeditorial = e.codigo_editorial  
+ORDER BY l.codigolibro
