@@ -1,0 +1,83 @@
+Funciones para el tipo de dato DATE.
+
+*-- La funcion CURRENT_DATE permite mostrar la fecha actual. --*
+
+SELECT CURRENT_DATE
+
+*-- Si ademas de la fecha, queremos mostrar la hora más la zona
+horaria ejecutamos lo siguiente: --*
+
+SELECT CURRENT_TIMESTAMP
+
+*-- Si solo queremos mostrar la hora más la zona
+horaria ejecutamos lo siguiente: --*
+
+SELECT CURRENT_TIME
+
+*-- Si queremos extraer el año, el mes o el dia de una fecha,
+debemos ejecutar el siguiente comando de acuerdo a la 
+extraccion que realicemos. --*
+
+SELECT EXTRACT(YEAR FROM '2018-05-12'::DATE)
+SELECT EXTRACT(MONTH FROM '2018-05-12'::DATE)
+SELECT EXTRACT(DAY FROM '2018-05-12'::DATE)
+
+*-- Y si quiero extraer el año, el mes o el dia de la fecha actual
+ejecutamos: --*
+
+SELECT EXTRACT(YEAR FROM CURRENT_DATE::DATE)
+SELECT EXTRACT(MONTH FROM CURRENT_DATE::DATE)
+SELECT EXTRACT(DAY FROM CURRENT_DATE::DATE)
+
+*-- Y si quiero extraer la hora, el minuto o el segundo de la hora 
+actual ejecutamos: --*
+
+SELECT EXTRACT(HOUR FROM CURRENT_TIMESTAMP)
+SELECT EXTRACT(MIN FROM CURRENT_TIMESTAMP)
+SELECT EXTRACT(SECOND FROM CURRENT_TIMESTAMP)
+
+*-- Ahora, si quiero realizar la extraccion de la siguiente fecha
+en formato 'text' ejecuto lo siguiente: --*
+
+SELECT EXTRACT(HOUR FROM '2021-09-19 08:08:00'::TIMESTAMP)
+
+*-- Si queremos extraer ahora el siglo de la fecha actual, ejecutamos
+el siguiente comando: --*
+
+SELECT EXTRACT(CENTURY FROM CURRENT_TIMESTAMP)
+
+*-- Si queremos extraer la fecha actual, tambien podemos ejecutar: --*
+
+SELECT NOW()
+
+*-- Ahora, si queremos a la fecha actual, restarle un dia, casteamos
+1 dia de tipo intervalo: --*
+
+SELECT NOW() - '1 day'::INTERVAL
+
+*-- Ahora, si queremos calcular la diferencia de tiempo entre
+dos fechas ejecutamos: --*
+
+SELECT AGE(DATE('2020-01-01'), DATE('2024-01-01'))
+
+*-- Donde en este caso, el resultado va a ser negativo de 4 years 
+porque estamos colocando como primer parametro una fecha
+anterior a la ingresada como segundo parametro. --*
+
+*-- Si queremos mostrar la fecha del dia de ayer, ejecutamos
+el siguiente comando: --*
+
+SELECT 'YESTERDAY'::DATE
+
+*-- Si queremos mostrar la fecha del dia de ayer agregando
+tambien la zona horaria, ejecutamos el siguiente comando: --*
+
+SELECT 'YESTERDAY'::TIMESTAMP WITH TIME ZONE
+
+*-- De manera analoga, podemos mostrar el dia de hoy. --*
+
+SELECT 'TODAY'::DATE
+
+
+
+
