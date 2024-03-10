@@ -1,0 +1,13 @@
+Eliminar caracteres a ambos lados
+
+*-- Ahora, si queremos eliminar una cierta cantidad de caracteres tanto al inicio
+como al final de una cadena de texto, vamos a combinar la funcion 'RTRIM' con
+'LTRIM'. --*
+
+SELECT LTRIM('---Ezequiel---', '-'), RTRIM('---Ezequiel---', '-')
+
+*-- De esta manera se eliminan los caracteres '-' que se encuentran 
+al inicio de '---Ezequiel' obteniendo como resultado 'Ezequiel---' en 
+la columna 'ltrim' y se eliminan los caracteres '-' que se encuentran 
+al final de 'Ezequiel---' obteniendo como resultado '---Ezequiel' en 
+la columna 'rtrim' . --*

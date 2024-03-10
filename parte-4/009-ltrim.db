@@ -1,0 +1,9 @@
+Funcion LTRIM | Eliminar caracteres al inicio 
+
+*-- Ahora, si queremos eliminar una cierta cantidad de caracteres al inicio de una cadena
+de texto, utilizamos la funcion 'LTRIM'. --*
+
+SELECT LTRIM('Ezequiel', '-')
+
+*-- De esta manera se eliminan los caracteres '-' que se encuentran 
+al inicio de '---Ezequiel' obteniendo como resultado 'Ezequiel'. --*

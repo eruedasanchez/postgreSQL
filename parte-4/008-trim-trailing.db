@@ -1,0 +1,9 @@
+Funcion Trim (Trailing). Eliminar caracteres al final de una cadena de texto
+
+*-- Ahora, si queremos eliminar una cierta cantidad de caracteres al final de una cadena
+de texto, vamos a combinar las funciones 'TRIM' y 'TRAILING'. --*
+
+SELECT TRIM(TRAILING '-' FROM 'Ezequiel---')
+
+*-- De esta manera se eliminan los caracteres '-' que se encuentran 
+al final de 'Ezequiel---' obteniendo como resultado 'Ezequiel'. --*

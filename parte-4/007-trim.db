@@ -1,0 +1,12 @@
+Funcion TRIM | Quitar espacios en blanco en una cadena de texto
+
+*-- Ahora, si queremos quitar espacios de una cadena de texto, ya sea al principio
+o al final de la cadena de texto, vamos a utilizar la funcion 'TRIM'. --*
+
+SELECT TRIM('Ezequiel					')
+SELECT TRIM('	Ezequiel')
+SELECT TRIM('		Ezequiel		')
+
+*-- Obteniendo como resultado 'Ezequiel'. --*
+
+
