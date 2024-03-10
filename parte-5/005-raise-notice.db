@@ -1,0 +1,39 @@
+Raise Notice.
+
+*-- Ahora, agregamos una especie de comentarios dependiendo de estado
+en que se encuentre la tabla 'mitablita'. --*
+
+CREATE OR REPLACE FUNCTION creartabla()
+RETURNS TEXT
+AS $$
+BEGIN	
+	RAISE NOTICE 'Borrado de la tabla mitablita';
+	IF EXISTS(SELECT tablename FROM pg_tables WHERE tablename='mitablita')
+		THEN 
+			DROP TABLE mitablita;
+	END IF;
+	
+	RAISE NOTICE 'Creación de la tabla mitablita';
+	IF NOT EXISTS(SELECT tablename FROM pg_tables WHERE tablename='mitablita')
+		THEN
+			CREATE TABLE mitablita(
+				nombre VARCHAR(45),
+				edad INTEGER,
+				pais VARCHAR(45)
+			);
+	END IF;
+
+RETURN 'Mi tablita fue creada con exito';
+
+END;
+$$ LANGUAGE plpgsql;
+
+*-- Ahora si ejecutamos SELECT creartabla() y vemos en la seccion 'Messages',
+obtenemos los siguientes mensajes: --*
+
+'NOTICE:  Borrado de la tabla mitablita'
+'NOTICE:  Creación de la tabla mitablita'
+
+*-- Correspondiente a los pasos que se realizó en la ejecución de la
+funcion 'creartabla()' donde el primer paso fue borrar la tabla existente
+'mitablita' y luego volver a crearla. --*
