@@ -1,0 +1,8 @@
+Función RANDOM | Numeros aleatorios
+
+*-- La funcion 'RANDOM' nos va a servir para mostrar numeros aleatorios en un
+determinado rango. --*
+
+*-- Por ejemplo, si queremos calcular un numero random entre 1 y 999 ejecutamos: --*
+
+SELECT CAST(RANDOM() * 1000 AS INT)

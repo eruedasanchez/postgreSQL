@@ -1,0 +1,13 @@
+Funcion ROUND | Redondear numeros
+
+Si queremos redondear un digito despues de un punto, ejecutamos el siguiente comando: 
+
+SELECT ROUND(828.4260460,1)
+
+*-- En este caso, solo mostramos un digito despues del punto obteniendo 828.4 --*
+
+*-- Ahora, si ejecutamos: --*
+
+SELECT ROUND(828.4260460,2)
+
+*-- Obtenemos como resultado 828.42 mostrando solo dos digitos del punto. --*

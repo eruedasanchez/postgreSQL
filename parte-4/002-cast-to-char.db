@@ -1,0 +1,13 @@
+Casteo a Char | Mostrar una determinada cantidad de caracteres de una cadena
+
+*-- Ahora, si queremos mostrar solo los primeros 4 digitos de un numero,
+ejecutamos el siguiente comando: --*
+
+SELECT CAST(12345678 AS CHAR(4))
+
+*-- De esta manera, obtenemos como resultado '1234' que es de tipo 'character'. --*
+
+*-- Ahora, si quiero mostrar los primeros '3' caracteres de una palabra
+ejecutamos el siguiente comando: --*
+
+SELECT CAST('Ezequiel' AS CHAR(3))
