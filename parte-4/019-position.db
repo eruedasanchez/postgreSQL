@@ -1,0 +1,9 @@
+Funcion position. Obtener ubicacion de una subcadena en una cadena de texto
+
+*-- Si queremos obtener una porcion de una cadena de texto, vamos a utilizar la
+funcion 'POSITION'. --*
+
+SELECT POSITION('equi' IN 'Ezequiel')
+
+*-- Obteniendo como resultado 3 dado que la primer letra de 'equi',
+es decir, 'e' se encuentra en la posicion 3. --*

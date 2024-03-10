@@ -6,3 +6,22 @@ cadena, utilizamos la funcion 'INITCAP'. --*
 SELECT INITCAP('ezequiel')
 
 *-- Obteniendo como resultado 'Ezequiel'. --*
+
+*-- Ahora, si queremos transformar en mayusculas la primer letra de una
+cadena, utilizamos la funcion 'INITCAP'. --*
+
+SELECT INITCAP('ezequiel')
+
+*-- Obteniendo como resultado 'Ezequiel'. --*
+
+*-- Si queremos transformar en minusculas toda una cadena, utilizamos la funcion 'LOWER'. --*
+
+SELECT LOWER('EZEQUIEL') 
+
+*-- Obteniendo como resultado 'ezequiel'. --*
+
+*-- Si queremos transformar en mayusculas toda una cadena, utilizamos la funcion 'UPPER'. --*
+
+SELECT UPPER('ezequiel') 
+
+*-- Obteniendo como resultado 'EZEQUIEL'. --*
