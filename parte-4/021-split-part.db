@@ -1,0 +1,10 @@
+Funcion SPLIT PART.
+
+*-- Si queremos separar cadenas, vamos a utilizar la funcion 'SPLIT_PART'. --*
+
+SELECT SPLIT_PART('2024-03-10', '-', 1)
+
+*-- Obteniendo como resultado '2024' dado que al ejecutar la función 
+SPLIT_PART, separamos la cadena '2024-03-10' en 3 subcadenas
+['2024', '03', '10'] debido al separador '-' y si solicitamos el 
+elemento numero 1, obtenemos '2024' como resultado. --*
