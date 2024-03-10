@@ -1,0 +1,14 @@
+Función Translate | Quitar acentos o dieresis a una palabra
+
+*-- Si queremos quitar el acento o dieresis de una palabra, vamos a
+utilizar la funcion 'TRANSLATE'. --*
+
+SELECT TRANSLATE('López', 'áéíóúÁÉÍÓÚ', 'aeiouAEIOU')
+
+*-- De esta manera, como el apellido 'López' tiene tilde en la letra 'ó',
+todas las apariciones de 'áéíóúÁÉÍÓÚ' se van a reemplazar por 'aeiouAEIOU'
+respectivamente. --*
+
+*-- Tambien, podemos reemplazar las dieresis de la siguiente manera: --*
+
+SELECT TRANSLATE('Estüpendö', 'áéíóúÁÉÍÓÚäëïöüÄËÏÖÜ', 'aeiouAEIOUaeiouAEIOU')
