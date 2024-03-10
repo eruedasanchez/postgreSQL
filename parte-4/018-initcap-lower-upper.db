@@ -1,0 +1,8 @@
+Funcion INITCAP. Poner en mayusculas la primer letra de una cadena
+
+*-- Ahora, si queremos transformar en mayusculas la primer letra de una
+cadena, utilizamos la funcion 'INITCAP'. --*
+
+SELECT INITCAP('ezequiel')
+
+*-- Obteniendo como resultado 'Ezequiel'. --*
