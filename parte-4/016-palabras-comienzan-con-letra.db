@@ -1,0 +1,13 @@
+Mostrar palabras que comiencen con una determinada letra
+
+*-- Comenzamos viendo la tabla alumnos. --*
+
+SELECT * FROM alumnos
+
+*-- Ahora, si queremos ver todos los apellidos paternos que comienzan con la
+letra 'V' ejecutamos: --*
+
+SELECT * FROM alumnos WHERE SUBSTRING(apellidopaterno, 1, 1) = 'V'
+
+*-- En este caso, 'SUBSTRING(apellidopaterno, 1, 1)' extrae de cada
+'apellidopaterno' desde la posicion 1, un (1) solo caracter. --*
