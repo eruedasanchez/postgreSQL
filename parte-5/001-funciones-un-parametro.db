@@ -1,0 +1,57 @@
+Funciones con un parámetro.
+
+*-- Queremos crear una función que, dado un numero, lo duplique. Es decir,
+queremos calcular el doble de un numero. --*
+
+CREATE OR REPLACE FUNCTION duplicar(num INT)
+RETURNS INT
+AS $$
+BEGIN
+
+RETURN num * 2;
+
+END;
+$$ LANGUAGE plpgsql;
+
+*-- Ahora, la ejecutamos de la siguiente manera: --*
+
+SELECT duplicar(4)
+
+*-- Obteniendo como resultado 8. --*
+
+*-- Ahora, creamos una funcion que calcula la mitad de un número. --*
+
+CREATE OR REPLACE FUNCTION mitad(num INT)
+RETURNS INT
+AS $$
+BEGIN
+
+RETURN num / 2;
+
+END;
+$$ LANGUAGE plpgsql;
+
+*-- Ahora, si ejecutamos SELECT mitad(1000) obtenemos como resultado 500.
+En cambio, si ejecutamos SELECT mitad(13) obtenemos como resultado 6 cuando
+debería retornar 6.5
+Es decir, la función tiene conflictos con los numeros impares.
+Por lo tanto, para solucionar esto debemos cambiar el tipo de 
+retorno de la función 'mitad' por DOUBLE PRECISION en lugar de INT. --*
+
+*-- Entonces, eliminamos la función 'mitad' y la creamos nuevamente con
+el retorno correcto. --*
+
+DROP FUNCTION mitad(INT)
+
+CREATE OR REPLACE FUNCTION mitad(num INT)
+RETURNS DOUBLE PRECISION
+AS $$
+BEGIN
+
+RETURN num / 2::DOUBLE PRECISION;
+
+END;
+$$ LANGUAGE plpgsql;
+
+*-- Ahora, si ejecutamos SELECT mitad(13) obtenemos como resultado 6.5 --*
+
