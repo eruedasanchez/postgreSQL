@@ -1,0 +1,29 @@
+Función Substring | Extraer caracteres
+
+*-- Ahora, si queremos extraer los primeros dos digitos de una cadena, vamos a
+utilizar la funcion 'SUBSTRING'. --*
+
+SELECT SUBSTRING('Ezequiel', LENGTH('Ezequiel') - 7, 3)
+
+*-- En este caso, la cadena que queremos recortar es 'Ezequiel' donde
+LENGTH('Ezequiel') retorna la cantidad de caracteres de la palabra 
+'Ezequiel' igual a 8 y le restamos 7, resultando 1.
+Luego, vamos a extraer de la cadena 'Ezequiel' desde el primer caracter 'E'
+los primeros 3 caracteres obteniendo como resultado 'Eze'. --*
+
+*-- Tambien podemos llamar la funcion SUBSTRING como SUBSTR. --*
+
+SELECT SUBSTR('Ezequiel', LENGTH('Ezequiel') - 7, 3)
+
+*-- Ahora, intentamos ejecutar la función SUBSTRING con numeros enteros. --*
+
+SELECT SUBSTRING(1234567899, LENGTH(1234567899) - 10, 2)
+
+*-- Obtenemos un error porque la funcion 'SUBSTRING' funciona solo
+con cadena de texto. Esto lo solucionamos casteando de la siguiente
+manera: --*
+
+SELECT SUBSTRING(1234567899::VARCHAR, LENGTH(1234567899::VARCHAR) - 9, 2)
+
+*-- Obteniendo como resultado '12' de tipo 'text'. --*
+

@@ -1,4 +1,4 @@
-Funcion Trim | Recortar caracteres de un texto
+Funcion Rtrim | Recortar caracteres de un texto
 
 *-- Ahora, si queremos recortar caracteres del final de un texto, utilizamos la
 funcion 'RTRIM'. --*
