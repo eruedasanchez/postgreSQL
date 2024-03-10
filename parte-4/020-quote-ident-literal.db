@@ -1,0 +1,15 @@
+Funcion QUOTE IDENT | LITERAL. Convertir valor a comillas dobles 
+
+*-- Si queremos devolver un dato en comillas dobles, vamos a utilizar la
+funcion 'QUOTE_IDENT'. --*
+
+SELECT QUOTE_IDENT('Ezequiel')
+
+*-- Obteniendo como resultado "Ezequiel". --*
+
+*-- Si queremos devolver un dato de tipo entero en comillas dobles, 
+vamos a utilizar la funcion 'QUOTE_LITERAL'. --*
+
+SELECT QUOTE_LITERAL(800)
+
+*-- Obteniendo como resultado '800'. --*
