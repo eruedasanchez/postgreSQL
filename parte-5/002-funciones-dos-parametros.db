@@ -1,0 +1,20 @@
+Funciones con dos parametros que retornan una suma.
+
+*-- Queremos crear una función que, dado dos datos, lo sume. --*
+
+CREATE OR REPLACE FUNCTION sumar(dato1 INT, dato2 INT)
+RETURNS DOUBLE PRECISION
+AS $$
+BEGIN
+
+RETURN dato1 + dato2;
+
+END;
+$$ LANGUAGE plpgsql;
+
+*-- Ahora, la ejecutamos de la siguiente manera: --*
+
+SELECT sumar(4,3)
+
+*-- Obteniendo como resultado 7. --*
+
