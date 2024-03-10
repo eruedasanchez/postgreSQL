@@ -1,0 +1,63 @@
+Funciones para el tipo de dato DATE. Ejercicios.
+
+*-- Comenzamos viendo que la tabla 'alumnos' si ejecutamos
+SELECT * FROM alumnos tiene las columnas 'fechanacimiento' y 
+'fechaingreso'. --*
+
+*-- Ahora, realizamos la siguiente insercion: --*
+
+INSERT INTO alumnos(numcontrol, nombre, apellidopaterno, apellidomaterno, fechanacimiento)
+VALUES (1023, 'Laura', 'Sanchez', 'Vidal', '1995-09-19'),
+(1024, 'Pedro', 'Sanchez', 'Vidal', '1996-09-19');
+
+*-- Ahora, vamos a contar aquellos alumnos en los que su mes de nacimiento 
+coincide con el mes de la fecha actual. Esto lo hacemos de la siguiente
+manera: --*
+
+SELECT COUNT(*) as cant_alumnos_current_date FROM alumnos 
+WHERE 
+EXTRACT(MONTH FROM fechanacimiento) = EXTRACT(MONTH FROM CURRENT_DATE) AND
+EXTRACT(DAY FROM fechanacimiento) = EXTRACT(DAY FROM CURRENT_DATE)
+
+*-- Ahora, si queremos mostrar quienes son los alumnos que satisfacen 
+la condicion anterior, ejecutamos el siguiente comando: --*
+
+SELECT nombre, apellidopaterno, apellidomaterno, fechanacimiento 
+FROM alumnos WHERE 
+EXTRACT(MONTH FROM fechanacimiento) = EXTRACT(MONTH FROM CURRENT_DATE) AND
+EXTRACT(DAY FROM fechanacimiento) = EXTRACT(DAY FROM CURRENT_DATE)
+
+*-- Ahora, si queremos mostrar aquellos alumnos que ingresaron en el año
+'1998' podemos ejecutar el siguiente comando: --*
+
+SELECT COUNT(*) FROM alumnos WHERE 
+EXTRACT(YEAR FROM fechaingreso) = '1998'
+
+*-- Ahora, si queremos conocer cual es el primer dia del mes actual,
+ejecutamos el siguiente comando: --*
+
+SELECT DATE_TRUNC('month', CURRENT_DATE)
+
+*-- Ahora, si queremos conocer cual es el dia actual,
+ejecutamos el siguiente comando: --*
+
+SELECT DATE_PART('day', CURRENT_DATE)
+
+*-- Ahora, si queremos conocer cual es el ultimo dia del mes actual,
+ejecutamos el siguiente comando: --*
+
+SELECT EXTRACT(DAY FROM(SELECT DATE_TRUNC('month', CURRENT_DATE) + '1 month'::INTERVAL) - '1 sec'::INTERVAL)
+
+*-- Y observamos que el resultado es 31 producto de: --*
+
+SELECT DATE_TRUNC('month', CURRENT_DATE): obtenemos el primer dia del mes actual,
+es decir, '01'.
+
+SELECT EXTRACT(DAY FROM(SELECT DATE_TRUNC('month', CURRENT_DATE) + '1 month'::INTERVAL):
+al primer dia del mes actual le sumo un mes más obteniendo el primer dia del mes siguiente
+al dia actual.
+
+SELECT EXTRACT(DAY FROM(SELECT DATE_TRUNC('month', CURRENT_DATE) + '1 month'::INTERVAL) - '1 sec'::INTERVAL):
+al primer dia del mes siguiente le resto un intervalo de '1' segundo, lo cual resultará
+como fecha correspondiente al último dia del mes actual y de esa fecha, extraemos el dia. 
+
