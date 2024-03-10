@@ -1,0 +1,8 @@
+Funcion Reverse | Mostrar caracteres en orden inverso
+
+*-- Si queremos devolver caracteres en orden inverso, vamos a utilizar la 
+funcion 'REVERSE'. --*
+
+SELECT REVERSE('Ezequiel')
+
+*-- En este caso, obtenemos como resultado 'leiuqezE'. --* 

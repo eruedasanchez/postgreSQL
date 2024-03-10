@@ -1,0 +1,10 @@
+Funcion Trim | Recortar caracteres de un texto
+
+*-- Ahora, si queremos recortar caracteres del final de un texto, utilizamos la
+funcion 'RTRIM'. --*
+
+SELECT RTRIM('POSTGRESQL', 'SQL')
+
+*-- De esta manera, recortamos de la palabra 'POSTGRESQL', la subcadena 'SQL' obteniendo
+como resultado 'POSTGRE'. --*
+
