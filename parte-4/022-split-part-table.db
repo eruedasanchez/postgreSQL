@@ -1,0 +1,36 @@
+Funcion SPLIT PART con tabla. Ejercicio.
+
+*-- Comenzamos creando una tabla llamada 'tablita'. --*
+
+CREATE TABLE tablita(
+	nombrecompleto VARCHAR(100)
+);
+
+*-- Ahora, insertamos los siguientes registros. --*
+
+INSERT INTO tablita VALUES 
+('Juan Sanchez Perez'),
+('Jose Dominguez Perez'),
+('Miguel Lopez Sanchez')
+
+*-- Ahora, vamos a mostrar el nombre y el primer apellido de cada registro
+utilizando la funcion 'SPLIT_PART'. -*
+
+SELECT SPLIT_PART(nombrecompleto, ' ', 1)||' '||
+SPLIT_PART(nombrecompleto, ' ', 2)
+AS nombre_primer_apellido FROM tablita
+
+*-- Tambien podemos ejecutar la funcion 'CONCAT' y obtenemos el mismo resultado. --*
+
+SELECT CONCAT(SPLIT_PART(nombrecompleto, ' ', 1), ' ', SPLIT_PART(nombrecompleto, ' ', 2)) 
+AS nombre_primer_apellido FROM tablita
+
+
+
+DELETE FROM tablita WHERE nombrecompleto = 'Miguel Lopez'
+
+SELECT * FROM tablita
+
+
+
+
