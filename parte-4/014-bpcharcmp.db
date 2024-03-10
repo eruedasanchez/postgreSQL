@@ -1,0 +1,11 @@
+Funcion Bpcharcmp. Comparar dos cadenas de texto.
+
+*-- Para chequear si dos cadenas de caracteres son iguales, vamos a utilizar la
+funcion 'BPCHARCMP'. --*
+
+SELECT BPCHARCMP('Oracion', 'Oración')
+
+*-- En ese caso, el resultado es igual a -1 porque las cadenas difieren en la
+tilde de la 'ó'. En el caso que ambas cadenas sean identicas, el resultado es
+igual a 0. --*
+

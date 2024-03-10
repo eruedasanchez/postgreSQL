@@ -1,0 +1,15 @@
+Funcion REPEAT | Repetir caracteres.
+
+*-- Ahora, si queremos repetir una cadena una cantidad determinada de veces
+vamos a utilizar la funcion 'REPEAT'. --*
+
+SELECT REPEAT('Ezequiel', 4)
+
+*-- Obteniendo como resultado 'EzequielEzequielEzequielEzequiel'. --*
+
+*-- Si queremos repetir un numero una cantidad de veces, ejecutamos: --*
+
+SELECT REPEAT(12::TEXT, 4)
+
+*-- De esta manera, casteamos el numero 12 para poder aplicarle la funcion
+'REPEAT'. --*
