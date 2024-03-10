@@ -1,0 +1,17 @@
+Funcion Ascii. Devolver codigo.
+
+*-- Si queremos retornar el código ASCII de un determinado caracter, vamos a
+utilizar la funcion 'ASCII'. --*
+
+SELECT ASCII('A')
+
+*-- Obteniendo como resultado el valor 65. --*
+
+*-- Si queremos retornar el caracter que coincida con un determinado codigo
+ASCII, vamos a utilizar la funcion 'CHR'. --*
+
+SELECT CHR(65)
+
+*-- Obteniendo como resultado el valor 'A'. --*
+
+
