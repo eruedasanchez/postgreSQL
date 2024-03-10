@@ -1,0 +1,30 @@
+Crear una tabla con funciones
+
+*-- Queremos realizar una función que cree una tabla. --*
+
+CREATE OR REPLACE FUNCTION creartabla()
+RETURNS TEXT
+AS $$
+BEGIN
+
+	CREATE TABLE mitablita(
+		nombre VARCHAR(45),
+		edad INTEGER,
+		pais VARCHAR(45)
+	);
+    	
+
+RETURN 'Mi tablita fue creada con exito';
+
+END;
+$$ LANGUAGE plpgsql;
+
+*-- Ahora, la ejecutamos de la siguiente manera: --*
+
+SELECT creartabla()
+
+*-- Obteniendo como resultado 'Mi tablita fue creada con exito'
+y se actualiza la cantidad de tablas creadas. --*
+
+SELECT * FROM mitablita
+
