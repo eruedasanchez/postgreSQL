@@ -1,0 +1,15 @@
+Funcion CHAR LENGTH | Longitud de una cadena de texto
+
+*-- Ahora, si queremos calcular la longitud de una palabra, utilizamos la 
+funcion 'CHAR_LENGTH'. --*
+
+SELECT CHAR_LENGTH('PostgreSQL') AS longitud_palabra
+
+*-- Obteniendo como resultado 10. --*
+
+*-- Ahora, si queremos calcular la longitud de un numero, primero
+tenemos que castearlo y luego, aplicamos la funcion 'CHAR_LENGTH'. --*
+
+SELECT CHAR_LENGTH(12345678::TEXT) AS longitud_palabra
+
+*-- Obteniendo como resultado 8. --*
