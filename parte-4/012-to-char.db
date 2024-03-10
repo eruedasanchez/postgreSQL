@@ -1,0 +1,27 @@
+Funcion TO CHAR. Mostrar solo año y mes de una fecha 
+
+*-- Si queremos mostrar solo el año y el mes, vamos a utilizar la funcion
+'TO_CHAR'. --*
+
+SELECT TO_CHAR(CURRENT_DATE, 'YYYYMMDD')
+
+*-- De esta manera, formateamos la fecha actual retornando 202403 correspondiente
+2024 a 'YYYY' y 03 a 'MM'. --*
+
+*-- Si quiero mostrar el año, el mes y el dia ejecutamos: --*
+
+SELECT TO_CHAR(CURRENT_DATE, 'YYYYMMDD')
+
+*-- Si solo quiero mostrar el año o el mes o el dia ejecutamos: --*
+
+SELECT TO_CHAR(CURRENT_DATE, 'YYYY')
+SELECT TO_CHAR(CURRENT_DATE, 'MM')
+SELECT TO_CHAR(CURRENT_DATE, 'DD')
+
+*-- Ahora, si quiero mostrar el año y el mes de una fecha particular, ejecuto
+el siguiente comando: --*
+
+SELECT TO_CHAR('2021-10-31'::DATE, 'YYYYMM')
+
+*-- Obteniendo como resultado 202110 correspondiente 2021 a 'YYYY' y
+10 a 'MM'. --*
