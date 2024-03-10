@@ -1,0 +1,49 @@
+Uso de variables para ejecutar queries en funciones y modificar
+registros con update en funciones.
+
+*-- Ahora, vamos a añadir variables y con esta, vamos a completar
+el valor de la columna telefono. --*
+
+CREATE OR REPLACE FUNCTION creartabla()
+RETURNS TEXT
+AS $$
+DECLARE
+	consulta TEXT;
+BEGIN	
+	IF EXISTS(SELECT tablename FROM pg_tables WHERE tablename='mitablita')
+		THEN 
+			consulta:= 'DROP TABLE mitablita';
+			EXECUTE consulta;
+	END IF;
+	RAISE NOTICE 'Borrado de la tabla mitablita';
+	
+	IF NOT EXISTS(SELECT tablename FROM pg_tables WHERE tablename='mitablita')
+		THEN
+			consulta:= 'CREATE TABLE mitablita(
+						nombre VARCHAR(45),
+						edad INTEGER,
+						pais VARCHAR(45)
+			);';
+			EXECUTE consulta;
+	END IF;
+	RAISE NOTICE 'Creación de la tabla mitablita';
+	
+	INSERT INTO mitablita VALUES('Jose', 45, 'Veracruz');
+	RAISE NOTICE 'Inserción de registros en la tabla mitablita';
+	
+	ALTER TABLE mitablita ADD COLUMN telefono VARCHAR(12);
+	RAISE NOTICE 'Se agrega la columma telefono en la tabla mitablita';
+	
+	consulta:= 'UPDATE mitablita SET telefono = ''123456789012'' WHERE nombre = ''Jose'' ';
+	EXECUTE consulta;
+	RAISE NOTICE 'Se completa la columma telefono';
+	
+RETURN 'Mi tablita fue creada con exito';
+
+END;
+$$ LANGUAGE plpgsql;
+
+*-- Ahora si ejecutamos SELECT creartabla() y luego
+SELECT * FROM mitablita, observamos que agrega el registro
+('Jose', 45, 'Veracruz') con valor 'null' en la columna 'telefono'. --*
+
