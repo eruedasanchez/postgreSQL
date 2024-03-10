@@ -1,0 +1,41 @@
+Instrucción IF EXISTS en funciones.
+
+*-- Ahora, observemos que cuando intentamos llamar nuevamente a
+la función SELECT creartabla() se produce un error porque la 
+tabla 'mitablita' ya existe. 
+Para solucionar esto, ejecutamos lo siguiente: --*
+
+CREATE OR REPLACE FUNCTION creartabla()
+RETURNS TEXT
+AS $$
+BEGIN
+	IF EXISTS(SELECT tablename FROM pg_tables WHERE tablename='mitablita')
+		THEN 
+			DROP TABLE mitablita;
+	END IF;
+	
+	IF NOT EXISTS(SELECT tablename FROM pg_tables WHERE tablename='mitablita')
+		THEN
+			CREATE TABLE mitablita(
+				nombre VARCHAR(45),
+				edad INTEGER,
+				pais VARCHAR(45)
+			);
+	END IF;
+
+RETURN 'Mi tablita fue creada con exito';
+
+END;
+$$ LANGUAGE plpgsql;
+
+*-- Donde:
+
+. 'pg_tables' muestra donde se encuentran todas las tablas de PostgreSQL,
+por lo que con SELECT tablename FROM pg_tables WHERE tablename='mitablita'
+obtenemos el nombre de la tabla 'mitablita' de la lista donde se encuentran
+todas las tablas 'pg_tables'. --*
+
+*-- Ahora, podemos ejecutar las veces que queramos la instrucción SELECT creartabla().--*
+
+SELECT * FROM mitablita
+
