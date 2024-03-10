@@ -1,0 +1,36 @@
+Insertar datos en una tabla con funciones.
+
+*-- Ahora, insertamos datos en la tabla 'mitablita'. --*
+
+CREATE OR REPLACE FUNCTION creartabla()
+RETURNS TEXT
+AS $$
+BEGIN	
+	IF EXISTS(SELECT tablename FROM pg_tables WHERE tablename='mitablita')
+		THEN 
+			DROP TABLE mitablita;
+	END IF;
+	RAISE NOTICE 'Borrado de la tabla mitablita';
+	
+	IF NOT EXISTS(SELECT tablename FROM pg_tables WHERE tablename='mitablita')
+		THEN
+			CREATE TABLE mitablita(
+				nombre VARCHAR(45),
+				edad INTEGER,
+				pais VARCHAR(45)
+			);
+	END IF;
+	RAISE NOTICE 'Creación de la tabla mitablita';
+	
+	INSERT INTO mitablita VALUES('Jose', 45, 'Veracruz');
+	RAISE NOTICE 'Inserción de registros en la tabla mitablita';
+	
+RETURN 'Mi tablita fue creada con exito';
+
+END;
+$$ LANGUAGE plpgsql;
+
+*-- Ahora si ejecutamos SELECT creartabla() y luego
+SELECT * FROM mitablita, observamos que agrega el registro
+('Jose', 45, 'Veracruz'). --*
+
