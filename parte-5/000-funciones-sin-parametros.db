@@ -1,0 +1,72 @@
+Funciones sin parametros.
+
+*-- Comenzamos creando nuestra primera función sin parámetros. --*
+
+CREATE FUNCTION mifuncion()
+RETURNS TEXT 
+AS $$
+BEGIN
+
+RETURN 'Bienvenido a mi curso de PostgreSQL';
+
+END;
+$$ LANGUAGE plpgsql;
+
+
+*-- Donde:
+
+. 'CREATE FUNCTION mifuncion()' es el comando para crear una funcion de nombre 'mifuncion'
+
+. 'RETURN TEXT' indica que tipo de dato retorna la función
+
+. 'AS $$' indica que lo que viene a continuacion es el cuerpo de la función
+
+. Entre 'BEGIN' y 'END' colocamos el cuerpo de la función
+
+. '$$ LANGUAGE plpgpsql' indicamos que vamos a utilizar el lenguaje 'plpgpsql', que es el
+que utilizamos para programar en postgreSQL
+
+--*
+
+*-- Ahora, llamamos a la función de la siguiente manera: --*
+
+SELECT mifuncion()
+
+*-- Obteniendo como resultado 'Bienvenido a mi curso de PostgreSQL'. --*
+
+*-- Ahora, si intentamos cambiar el tipo de retorno de nuestra funcion 
+a INT: --*
+
+CREATE OR REPLACE FUNCTION mifuncion()
+RETURNS INT 
+AS $$
+BEGIN
+
+RETURN 'Bienvenido a mi curso de PostgreSQL';
+
+END;
+$$ LANGUAGE plpgsql;
+
+*-- Nos arroja el error: 'ERROR: cannot change return type of existing function',
+es decir, no se puede cambiar el tipo de retorno de una función existente. 
+Por lo tanto, para cambiar esto vamos a eliminar la función y luego crearla
+nuevamente. --*
+
+DROP FUNCTION mifuncion()
+
+CREATE OR REPLACE FUNCTION mifuncion()
+RETURNS INT 
+AS $$
+BEGIN
+
+RETURN 100;
+
+END;
+$$ LANGUAGE plpgsql;
+
+*-- Ahora, llamamos a la función de la siguiente manera: --*
+
+SELECT mifuncion()
+
+*-- Obteniendo como resultado 100. --*
+
