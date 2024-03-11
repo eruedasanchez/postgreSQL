@@ -1,0 +1,34 @@
+Crear función para modificar el precio de un producto, en base al código.
+
+*-- En este ejercicio, queremos crear una funcion que, dado un idproducto,
+modificar el precio del producto con dicho idproducto de la tabla 'products'. --*
+
+CREATE OR REPLACE FUNCTION actualizar_precio(idprod INTEGER, valor NUMERIC)
+RETURNS TEXT
+AS $BODY$
+DECLARE
+	codigo_producto INTEGER;
+	descripcion_producto VARCHAR;
+	
+BEGIN
+	UPDATE products SET precio = valor WHERE productoid = idprod;
+	RAISE NOTICE 'Se actualiza el precio del producto ingresado por parametro.';
+	
+	SELECT descripcion INTO descripcion_producto FROM products 
+	WHERE productoid = idprod;
+	RAISE NOTICE 'Se coloca en la columna descripcion la descripcion del 
+	producto buscado';
+	
+	
+	RETURN descripcion_producto;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Ahora, ejecutamos la funcion de la siguiente manera: --*
+
+SELECT actualizar_precio(100, 111.5) 
+
+*-- Obteniendo como salida 'Lata de atun Medusa 400 g' y el
+precio actualizado. --*
+
+SELECT * FROM products ORDER BY productoid
