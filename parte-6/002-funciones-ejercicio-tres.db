@@ -1,0 +1,35 @@
+Crear función que vaya cambiando el valor de una variable.
+
+*-- En este ejercicio, queremos crear una funcion que vaya cambiando el valor 
+de una variable. --*
+
+CREATE OR REPLACE FUNCTION cambiar_valor()
+RETURNS INTEGER
+AS $BODY$
+DECLARE
+	valor INTEGER:= 0; 
+
+BEGIN
+	RAISE NOTICE 'El valor es 0';
+	valor := 80;
+	RAISE NOTICE 'El valor fue cambiado a 80';
+	valor := 100;
+	RAISE NOTICE 'El valor ahora fue cambiado a 100';
+	
+	RETURN valor;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Ahora, ejecutamos la funcion de la siguiente manera: --*
+
+SELECT cambiar_valor() 
+
+*-- Obteniendo como resultado 100. --*
+
+*-- Si observamos en la seccion de Messages, obtenemos los siguientes mensajes: --*
+
+'
+NOTICE:  El valor es 0
+NOTICE:  El valor fue cambiado a 80
+NOTICE:  El valor ahora fue cambiado a 100
+'
