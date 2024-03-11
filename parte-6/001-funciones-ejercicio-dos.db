@@ -1,0 +1,21 @@
+Crear función que nos permita devolver un registro entero.
+
+*-- En este ejercicio, queremos crear una funcion que, dado un codigo, nos permita
+mostrar un registro entero. --*
+
+CREATE OR REPLACE FUNCTION mostrar_registro(cod_producto INTEGER)
+RETURNS TEXT 
+AS $BODY$
+DECLARE
+	idproducto NUMERIC:= $1; 
+
+BEGIN
+	RETURN 'El id del producto pasado por parametro es' || idproducto;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Ahora, ejecutamos la funcion de la siguiente manera: --*
+
+SELECT mostrar_registro(101) 
+
+*-- Obteniendo como resultado 'El id del producto pasado por parametro es 101'. --*
