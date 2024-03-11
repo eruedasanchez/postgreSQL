@@ -1,0 +1,45 @@
+Crear función a la que le pasemos en el parámetro, el código de un producto de una tabla, 
+y que nos retorne cuánto pagará el cliente por ese producto + el IVA.
+
+*-- En este ejercicio, queremos crear una funcion, de dado el codigo de
+un producto, retorna cuanto va a abonar el cliente por dicho producto
+incluyendo el IVA en el valor de final de retorno. --*
+
+CREATE OR REPLACE FUNCTION valor_final_producto(cod_producto INTEGER)
+RETURNS NUMERIC 
+AS $BODY$
+DECLARE
+	precioproducto NUMERIC:= (SELECT precio FROM productos WHERE productoid = $1);
+	ivaproducto NUMERIC:= precioproducto * 0.21;
+	total NUMERIC:= precioproducto + ivaproducto;
+
+BEGIN
+	RETURN total;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Donde colocamos $1 porque hacemos referencia al primer parametro que toma
+la función 'valor_final_producto'. --*
+
+*-- Ahora, ejecutamos la funcion de la siguiente manera: --*
+
+SELECT valor_final_producto(101) 
+
+*-- Tambien podemos crear la funcion de la siguiente manera: --*
+
+CREATE OR REPLACE FUNCTION valor_final_producto(cod_producto INTEGER)
+RETURNS NUMERIC 
+AS $BODY$
+DECLARE
+	precioproducto NUMERIC:= (SELECT precio FROM productos WHERE productoid = cod_producto);
+	ivaproducto NUMERIC:= precioproducto * 0.21;
+	total NUMERIC:= precioproducto + ivaproducto;
+
+BEGIN
+	RETURN total;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+
+SELECT * FROM productos
+
