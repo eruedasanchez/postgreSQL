@@ -1,0 +1,43 @@
+Repaso variable record(de fila).
+Crear función a la que le pasemos dos palabras en sus parámetros, 
+y nos diga cuál palabra es de mayor longitud.
+
+*-- En este ejercicio, queremos crear una funcion que, dada dos palabras 
+pasadas por parametro, va a retornar aquella que tenga mayor
+longitud. --*
+
+CREATE OR REPLACE FUNCTION mayor_longitud(palabra1 TEXT, palabra2 TEXT)
+RETURNS RECORD 
+AS $BODY$
+DECLARE
+	rec RECORD;
+	
+BEGIN
+	IF LENGTH(palabra1) < LENGTH(palabra2) THEN
+		SELECT TRUE, 'Palabra1 tiene menor longitud que Palabra2'
+		INTO rec;
+	ELSE 
+		SELECT FALSE, 'Palabra2 tiene mayor longitud que Palabra1'
+		INTO rec;
+	END IF;
+	RETURN rec;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Donde: 
+
+. Si se cumple que la longitud de la 'palabra1' es menor que la
+longitud de la 'palabra2', entonces se almacena en la variable 'rec'
+'t, "Palabra1 tiene menor longitud que Palabra2"'. Caso contrario,
+se almacena en la variable 'rec', 'f,"Palabra2 tiene mayor longitud que Palabra1"'
+--*
+
+*-- Ahora, ejecutamos la funcion de la siguiente manera: --*
+
+SELECT 	mayor_longitud('Sushi', 'Milanesas') 
+
+*-- Obteniendo como resultado: 
+
+'(t, "Palabra1 tiene menor longitud que Palabra2")'
+
+--*
