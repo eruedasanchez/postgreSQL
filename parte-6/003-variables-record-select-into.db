@@ -1,0 +1,33 @@
+Variables RECORD y comando SELECT INTO.
+Crear función que muestre la descripcion de un producto al ingresar el código.
+
+*-- En este ejercicio, queremos crear una funcion que retorne la descripcion
+de un determinado producto de una tabla. --*
+
+CREATE OR REPLACE FUNCTION datos_producto(id_prod INTEGER)
+RETURNS VARCHAR 
+AS $BODY$
+DECLARE
+	r RECORD;
+	
+BEGIN
+	SELECT * INTO r FROM productos WHERE productoid = $1;
+	
+	RETURN r.descripcion;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Donde: 
+
+. 'SELECT * INTO r FROM producto WHERE productoid = id_prod;'
+va a tomar la fila actual (gracias a la variable de tipo record) 
+del correspondiente al 'id_prod' pasado por parametro de la tabla 'productos'. 
+
+--*
+
+*-- Ahora, ejecutamos la funcion de la siguiente manera: --*
+
+SELECT datos_producto(100) 
+
+*-- Obteniendo como resultado 'Lata de atun Medusa 400 g'. --*
+
