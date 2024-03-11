@@ -1,0 +1,40 @@
+Crear función que copie los registros de un archivo csv a una tabla de PostgreSQL.
+
+*-- En este ejercicio, queremos crear una funcion que, se le pase un archivo
+'CSV' y copie dichos registros en una tabla. --*
+
+CREATE OR REPLACE FUNCTION copiar_archivo(OUT resultado TEXT)
+RETURNS TEXT
+AS $BODY$
+DECLARE
+	consulta TEXT;
+
+BEGIN
+	IF EXISTS(SELECT tablename FROM pg_tables WHERE tablename='tmp_productos') THEN
+		DROP TABLE tmp_productos;
+	END IF;
+	RAISE NOTICE 'Se elimino tabla temporal tmp_productos';
+	
+	CREATE TABLE tmp_productos(
+		productoid INTEGER,
+		descripcion VARCHAR(100),
+		precio DOUBLE PRECISION
+	);
+	RAISE NOTICE 'Se creo la tabla temporal tmp_productos';
+	
+	COPY tmp_productos FROM '/Users/ezequielpc/Desktop/work/postgreSQL/resources/datos-productos.csv'
+	DELIMITER ',' CSV HEADER;
+	
+	RAISE NOTICE 'Se copian los registros del archivo CSV en la tabla temporal tmp_productos';
+	
+	INSERT INTO productos SELECT * FROM tmp_productos;
+	RAISE NOTICE 'Se insertan los registros de la tabla tmp_productos en la tabla productos';
+	
+	resultado:= 'Copiado realizado con exito';
+	RETURN;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Ahora, ejecutamos la funcion de la siguiente manera: --*
+
+SELECT copiar_archivo() 
