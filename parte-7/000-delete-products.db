@@ -1,0 +1,24 @@
+Crear función que elimine un producto de la tabla productos, en base al código.
+
+*-- En este ejercicio, queremos crear una funcion que, dado un idproducto,
+elimine el productos con dicho idproducto de la tabla 'productos'. --*
+
+CREATE OR REPLACE FUNCTION eliminar_producto(idprod INTEGER, OUT mensaje TEXT)
+RETURNS TEXT
+AS $BODY$
+DECLARE
+
+BEGIN
+	DELETE FROM products WHERE productoid = idprod; 
+	mensaje:= 'Producto eliminado correctamente con product id'||' '||idprod;
+	RETURN;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Ahora, ejecutamos la funcion de la siguiente manera: --*
+
+SELECT eliminar_producto(111) 
+
+*-- Obteniendo como resultado 'Producto eliminado correctamente con product id 111'. --*
+
+SELECT * FROM products
