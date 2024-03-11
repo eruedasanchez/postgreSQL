@@ -1,0 +1,46 @@
+Retorno Setof y For Loop.
+Crear función que nos devuelva múltiples filas de una tabla.
+
+*-- En este ejercicio, queremos crear una funcion que retorne varias filas
+de un producto de una tabla. --*
+
+CREATE OR REPLACE FUNCTION devuelve_filas(id_prod INTEGER)
+RETURNS SETOF RECORD 
+AS $BODY$
+DECLARE
+	rec RECORD;
+
+BEGIN
+	FOR rec IN
+		SELECT * FROM productos WHERE productoid = id_prod
+	LOOP
+	
+	RETURN NEXT rec;
+	END LOOP;
+	RETURN;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Donde: 
+
+. 'SETOF' indica que se van a tomar varias filas.
+
+. ' FOR rec IN
+		EXECUTE 'SELECT * FROM productos'
+	LOOP' indica que se va a ir pasando por cada uno de los
+	registros de la tabla 'productos'
+
+. 'RETURN NEXT rec;' retorna cada uno de esos registros
+--*
+
+*-- Ahora, ejecutamos la funcion de la siguiente manera: --*
+
+SELECT * FROM devuelve_filas(101) AS (
+	productoid INTEGER,
+	descripcion VARCHAR(100),
+	precio DOUBLE PRECISION
+)  
+
+*-- Obteniendo como resultado la fila correspondiente 
+al producto con productoid = 101 de la tabla
+'productos'. --*
