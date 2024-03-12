@@ -1,0 +1,43 @@
+Ejercicio - Crear una función que inserte ventas.
+
+*-- Comenzamos creando la funcion 'insercion_ventas' --*
+
+CREATE OR REPLACE FUNCTION insercion_ventas()
+RETURNS TEXT 
+AS $BODY$
+DECLARE
+
+BEGIN
+	IF EXISTS(SELECT tablename FROM pg_tables WHERE tablename = 'tmp_ventas') THEN
+		DROP TABLE tmp_ventas;
+	END IF;
+	
+	CREATE TABLE tmp_ventas(numvendedor, fechaventa, ciudad, estado, numcliente, monto, fechainsercion)
+	AS SELECT numvendedor, fecha, ciudad, estado, numcliente, monto, CURRENT_DATE
+	FROM ventas
+	WHERE ciudad IN('Obregón', 'Navojoa');
+	
+	COPY tmp_ventas TO '/Users/ezequielpc/Desktop/ventas_ocho.csv' HEADER CSV DELIMITER ',';
+	
+	ALTER TABLE tmp_ventas DROP COLUMN fecha_insercion;
+	
+	INSERT INTO ventas_obregon_navojoa SELECT * FROM tmp_ventas;
+
+	RETURN 'Proceso exitoso';
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Antes de crear la funcion, creamos la tabla 'ventas_obregon_navojoa'. --*
+
+CREATE TABLE ventas_obregon_navojoa(
+	numvendedor BIGINT,
+	fecha DATE,
+	ciudad VARCHAR(45),
+	estado VARCHAR(45),
+	numcliente BIGINT,
+	monto DOUBLE PRECISION
+);
+
+*-- Por ultimo, creamos la funcion y ejecutamos SELECT insercion_ventas(). --*
+
+
