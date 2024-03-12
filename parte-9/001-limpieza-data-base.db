@@ -1,0 +1,83 @@
+Limpieza de bases de datos (Quitar letra ñ, acentos, símbolos especiales, diéresis, 
+en una tabla de la base de datos).
+Y ver codificación en el gestor PostgreSQL (SHOW server_encoding).
+
+*-- Ahora, vamos a crear una funcion que nos permita limpiar nuestra base
+de datos. --*
+
+*-- Si queremos ver la codificacion con la que está trabajando PostgreSQL,
+ejecutamos el comando SHOW SERVER_ENCODING obteniendo UTF8 como
+resultado. --*
+
+*-- Creamos la siguiente tabla: --*
+
+CREATE TABLE ventastienda(
+	numvendedor BIGINT,
+	nombre VARCHAR(100),
+	telefono BIGINT,
+	fecha DATE,
+	ciudad VARCHAR(45),
+	estado VARCHAR(45),
+	numcliente BIGINT
+	monto DOUBLE PRECISION
+);
+
+*-- Y ahora, creamos la siguiente tabla temporal: --*
+
+CREATE TABLE tmp_ventastienda AS SELECT * FROM ventastienda LIMIT 0
+
+*-- Donde la tabla temporal 'tmp_ventastienda' al colocarle
+AS SELECT * FROM ventastienda LIMIT 0 solo obtenemos la estructura
+de 'ventastienda' y ningun registro por 'LIMIT 0'. --*
+
+*-- Ahora, vamos a copiar en la tabla 'tmp_ventastienda' todos los registros del
+archivo 'ventastienda.csv'. --*
+
+COPY tmp_ventastienda FROM '/Users/ezequielpc/Desktop/work/postgreSQL/resources/ventastienda.csv' 
+DELIMITER ',' HEADER CSV;
+
+*-- Por lo tanto, al realizarse unicamente un copiado, la tabla 'tmp_ventastienda'
+ahora contiene errores que debemos limpiar. --*
+
+INSERT INTO ventastienda(numvendedor, nombre, telefono, fecha, ciudad, estado, numcliente, monto)
+SELECT 
+numvendedor, 
+TRANSLATE(nombre, 'áéíóúÁÉÍÓÚäëïöüÄËÖÜïñÑ', 'aeiouAEIOUaeiouAEIOUnN'),
+telefono, fecha, 
+TRANSLATE(ciudad, 'áéíóúÁÉÍÓÚäëïöüÄËÖÜïñÑ', 'aeiouAEIOUaeiouAEIOUnN'),
+estado, numcliente, monto
+FROM tmp_ventastienda
+
+*-- Ahora, continuamos eliminando aquellos registros que tienen algun valor
+en 'null'. --*
+
+DELETE FROM ventastienda WHERE numvendedor IS NULL;
+DELETE FROM ventastienda WHERE nombre IS NULL;
+DELETE FROM ventastienda WHERE telefono IS NULL;
+DELETE FROM ventastienda WHERE fecha IS NULL;
+DELETE FROM ventastienda WHERE ciudad IS NULL;
+DELETE FROM ventastienda WHERE estado IS NULL;
+DELETE FROM ventastienda WHERE numcliente IS NULL;
+DELETE FROM ventastienda WHERE monto IS NULL;
+
+*-- Ejecutando SELECT * FROM ventastienda, vemos que no hay registros con
+valor 'null'. --*
+
+*-- Ahora, vamos a eliminar aquellos telefonos que tengan longitud menor a 10 digitos. --*
+
+DELETE FROM ventastienda WHERE CHAR_LENGTH(telefono::TEXT) != 10
+
+*-- Ahora, vamos a eliminar aquellos registros que tengan simbolos especiales. --*
+
+UPDATE ventastienda SET nombre = regexp_replace(nombre, '[^a-zA-Z0-9]', '', 'g');
+UPDATE ventastienda SET ciudad = regexp_replace(nombre, '[^a-zA-Z0-9]', '', 'g');
+UPDATE ventastienda SET estado = regexp_replace(nombre, '[^a-zA-Z0-9]', '', 'g');
+
+*-- Como esta funcion, elimina los caracteres especiales y los deja en blanco,
+ahora, algunos nombres quedaron vacios y debemos eliminarlos tambien. --*
+
+DELETE FROM ventastienda WHERE nombre = '';
+DELETE FROM ventastienda WHERE numcliente IS NULL OR numcliente = 0;
+
+
+
