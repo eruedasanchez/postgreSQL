@@ -1,0 +1,22 @@
+ Visualizar registros de una tabla, usando tipo de datos compuestos.
+
+ *-- En este ejercicio, queremos crear una funcion que, visualice registros 
+de una tabla de la tabla products. --*
+
+CREATE OR REPLACE FUNCTION devolver_producto(idprod INTEGER)
+RETURNS products 
+AS $BODY$
+DECLARE
+	prod products;
+
+BEGIN
+	SELECT * INTO prod FROM products WHERE productoid = idprod;
+	RETURN prod;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Ahora, ejecutamos la funcion de la siguiente manera: --*
+
+SELECT devolver_producto(106) 
+
+*-- Obtenemos como resultado '(106,"Lata de camaron condimentado Medusa 1000 g",220)'. --*
