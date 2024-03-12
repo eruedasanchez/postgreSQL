@@ -1,0 +1,75 @@
+Crear función que acepte un archivo como parámetro.
+
+*-- Vamos a crear una funcion para que, tomando un archivo como parametro,
+pueda extraer la información e insertarla en una determinada tabla. --*
+
+CREATE OR REPLACE FUNCTION funcion_copiado(archivo TEXT, OUT situacion TEXT, OUT estado INTEGER)
+RETURNS SETOF RECORD
+AS $BODY$
+
+DECLARE
+	dia_actual INTEGER;
+	yearmonth TEXT;
+	hacer_copiado TEXT;
+	consulta TEXT;
+	
+BEGIN
+	SELECT DATE_PART('day', CURRENT_DATE) INTO dia_actual;
+	SELECT SUBSTRING(REPLACE(CURRENT_DATE::TEXT,'-',''),1,6) INTO yearmonth;
+	
+	IF EXISTS(SELECT tablename FROM pg_tables WHERE tablename='tmp_ventas') THEN
+		DROP TABLE tmp_ventas;
+	END IF;
+	
+	CREATE TABLE tmp_ventas(
+		numvendedor BIGINT,
+		fecha DATE, 
+		ciudad VARCHAR(45),
+		estado VARCHAR(45),
+		cliente BIGINT,
+		ventas DOUBLE PRECISION
+	);
+	
+	hacer_copiado:= 'COPY tmp_ventas FROM ''/Users/ezequielpc/Desktop/work/postgreSQL/resources/'||archivo||'''CSV HEADER DELIMITER'', ''';
+	EXECUTE hacer_copiado; 
+	
+	IF(dia_actual = 1 OR dia_actual = 01) THEN
+		consulta:='CREATE TABLE vents_'||yearmonth||'(
+			numvendedor BIGINT,
+			fecha DATE, 
+			ciudad VARCHAR(45),
+			estado VARCHAR(45),
+			cliente BIGINT,
+			ventas DOUBLE PRECISION
+		)';
+		EXECUTE consulta;
+	END IF;
+	
+	IF EXISTS(SELECT tablename FROM pg_tables WHERE tablename='vents_'||yearmonth||'') THEN
+		-- En el caso de que se ejecute la funcion en el mismo dia
+		consulta:='INSERT INTO vents_'||yearmonth||'
+		SELECT * FROM tmp_ventas
+		WHERE EXTRACT(MONTH FROM fecha) = EXTRACT(MONTH FROM CURRENT_DATE);';
+		EXECUTE consulta;
+	END IF;
+	
+	situacion:='Copiado e insercion exitosa';
+	estado:= 1;
+	RETURN NEXT;
+	
+	EXCEPTION WHEN OTHERS THEN 
+	situacion:= 'Ocurrio el siguiente error:'||SQLERRM;
+	estado:= 0;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Una vez creada la funcion, la ejecutamos. --*
+
+SELECT funcion_copiado('Ventas.csv')
+
+*-- Si ejecutamos SELECT * FROM tmp_ventas observamos que el copiado 
+de la tabla se realizó con exito. 
+Y si ejecutamos SELECT * FROM vents_202403, vamos a observar todas
+las ventas que se realizaron en el mes de marzo de 2024. --*
+	
+	
