@@ -1,0 +1,44 @@
+Creación de vistas.
+
+*-- Las vistas nos ayudan a que podamos visualizar datos de una o varias
+tablas. Podemos considerarlas como una tabla virtual que va a almacenar una
+consulta. --*
+
+*-- Veamos este concepto con un ejemplo. Sabemos que la tabla 'libros' tiene una
+columna 'codigoeditorial' que se encuentra asociada a la tabla 'editorial'
+donde la podemos asociar con la columna 'codigo_editorial' para asociarla y
+ver el nombre, la ciudad y el estado de la editorial correspondiente al libro. --*
+
+SELECT * FROM libros WHERE codigoeditorial = 232
+SELECT * FROM editorial WHERE codigo_editorial = 232
+
+*-- Tambien, sabemos que podemos unir ambas tablas mediante un 'INNER JOIN'. --*
+
+SELECT * FROM libros l
+INNER JOIN editorial e
+ON l.codigoeditorial = e.codigo_editorial
+
+*-- Si esta consulta la vamos a realizar de manera frecuente, nos conviene crear
+una vista. --*
+
+CREATE VIEW consulta_libros AS
+SELECT * FROM libros l
+INNER JOIN editorial e
+ON l.codigoeditorial = e.codigo_editorial
+
+*-- Y la llamamos SELECT * FROM consulta_libros --*
+
+*-- Ahora, vamos a crear una vista para saber cuantos alumnos ingresaron en cada año
+de la tabla alumnos. --*
+
+CREATE VIEW ingreso_alumnos AS
+SELECT EXTRACT(YEAR FROM fechaingreso) AS fecha_ingreso,
+COUNT(*) AS cant_por_año FROM alumnos
+GROUP BY EXTRACT(YEAR FROM fechaingreso) 
+ORDER BY fecha_ingreso DESC
+
+*-- De esta manera, extraemos cada año diferente de la columna 'fechaingreso', 
+contamos cuantos alumnos ingresaron en cada año definido y por ultimo, los 
+agrupamos por el año de ingreso. --*
+
+SELECT * FROM ingreso_alumnos
