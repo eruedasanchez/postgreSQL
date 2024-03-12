@@ -1,0 +1,32 @@
+SETOF RECORD. Crear función que retorne todos los registros de una tabla.
+
+*-- En este ejercicio, queremos crear una funcion que, retorne todos los registros
+de la tabla products. --*
+
+CREATE OR REPLACE FUNCTION visualizar_productos()
+RETURNS SETOF products 
+AS $BODY$
+DECLARE
+	resultado RECORD;
+
+BEGIN
+	FOR resultado IN SELECT * FROM products 
+	LOOP
+	RETURN NEXT resultado;
+	END LOOP;
+	RAISE NOTICE 'Mostrando en cada iteracion, cada fila que se almacena en resultado';
+	RETURN;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Donde: 
+
+. Colocamos 'SETOF' porque vamos a devolver varias filas de la tabla products
+
+-*
+
+*-- Ahora, ejecutamos la funcion de la siguiente manera: --*
+
+SELECT visualizar_productos() 
+
+*-- Obteniendo como resultado todas las filas de la tabla 'products' --*
