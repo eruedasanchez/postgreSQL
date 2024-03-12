@@ -1,0 +1,99 @@
+Clausula HAVING.
+
+*-- La clausula 'HAVING' nos permite filtrar los registros que
+realicemos con la clausula 'GROUP BY'. --*
+
+*-- Comenzamos viendo la tabla 'alumnos' SELECT * FROM alumnos.--*
+
+*-- Ahora, vamos a querer agrupar por carreras. Es decir, queremos saber cuantos
+alumnos por carrera. Esto habiamos visto que lo podemos realizar con la clausula
+'GROUP BY' de la siguiente manera: --*
+
+SELECT carrera, COUNT(*) AS cant_alumnos_carrera FROM alumnos
+GROUP BY carrera
+
+*-- Si no quiero ver la cantidad de alumnos que tiene la carrera de
+'Ingenieria en Sistemas' y 'Contabilidad' utilizamos la clausula
+'HAVING' de la siguiente manera: --*
+
+SELECT carrera, COUNT(*) AS cant_alumnos_carrera FROM alumnos
+GROUP BY carrera
+HAVING carrera<>'Ingenieria en Sistemas' AND carrera<>'Contabilidad'
+
+*-- Donde <> significa distinto, es decir, carrera<>'Ingenieria en Sistemas'
+que la carrera sea distinta a 'Ingenieria en Sistemas'. --*
+
+*-- Ahora, queremos ver por cada carrera, cual es el alumno que tiene mayor y menor
+promedio pero solo de la carrera de 'Ingenieria en Sistemas'. 
+Esto lo realizamos de la siguiente manera: --*
+
+SELECT carrera, max(promedio) AS mayor_promedio, min(promedio) AS menor_promedio
+FROM alumnos 
+GROUP BY carrera
+HAVING carrera='Ingenieria en Sistemas'
+
+*-- Ahora, vamos a crear nuevamente la tabla 'ciudades' previo eliminarla 
+DROP TABLE ciudades. --*
+
+CREATE TABLE ciudades(
+	nombre VARCHAR(45),
+	temperatura_maxima DOUBLE PRECISION,
+	temperatura_minima DOUBLE PRECISION,
+	fecha DATE
+);
+
+INSERT INTO ciudades(nombre,temperatura_maxima,temperatura_minima,fecha)
+VALUES('Obregón',40.2,28.3,'2022-01-01'),('Hermosillo',44.2,39.6,'2022-01-01'),
+('Navojoa',39.4,30.6,'2022-01-01'),('Guasave',41.8,39.2,'2022-01-01'),
+('Chihuahua',28.5,25.6,'2022-01-01'),('Mazatlán','39.6',35.1,'2022-01-01'),
+('Monterrey',24.1,18.2,'2022-01-01'),('Guadalajara',25.8,18.4,'2022-01-01'),
+('Puerto Vallarta',29.6,21.2,'2022-01-01'),('Cd. de México',21.4,18.6,'2022-01-01'),
+('Cancún',29.4,26.7,'2022-01-01'),('Los Mochis',44.1,39.6,'2022-01-01'),
+('Culiacán',44.2,40.7,'2022-01-01'),('Cuernavaca',23.4,21.8,'2022-01-01'),
+('Mocorito',40.1,39.8,'2022-01-01'),('Colima',36.5,33.6,'2022-01-01'),
+('Obregón',40.1,38.5,'2022-01-02'),('Hermosillo',44.6,43.1,'2022-01-02'),
+('Navojoa',42.4,40.1,'2022-01-02'),('Guasave',40.8,37.6,'2022-01-02'),
+('Chihuahua',29.5,25.7,'2022-01-02'),('Mazatlán',40.1,36.7,'2022-01-02'),
+('Monterrey',24.1,22.9,'2022-01-02'),('Guadalajara',25.8,21.5,'2022-01-02'),
+('Puerto Vallarta',29.6,24.2,'2022-01-02'),('Cd. de México',21.4,17.5,'2022-01-02'),
+('Cancún',29.4,25.7,'2022-01-02'),('Los Mochis',44.1,40.1,'2022-01-02'),
+('Culiacán',44.2,36.7,'2022-01-02'),('Cuernavaca',23.4,18.5,'2022-01-02'),
+('Mocorito',40.1,34.2,'2022-01-02'),('Colima',36.5,27.7,'2022-01-02'),
+('Obregón',41.2,35.3,'2022-01-03'),('Hermosillo',42.6,36.8,'2022-01-03'),
+('Navojoa',31.4,27.6,'2022-01-03'),('Guasave',37.6,35.1,'2022-01-03'),
+('Chihuahua',36,34,'2022-01-03'),('Mazatlán',37,35.1,'2022-01-03'),
+('Monterrey',26.1,15.2,'2022-01-3'),('Guadalajara',28.2,22.4,'2022-01-03'),
+('Puerto Vallarta',26.6,26.2,'2022-01-03'),('Cd. de México',23.1,18.2,'2022-01-03'),
+('Cancún',29.1,28.7,'2022-01-03'),('Los Mochis',44.1,39.6,'2022-01-03'),
+('Culiacán',44.2,40.7,'2022-01-03'),('Cuernavaca',23.4,21.8,'2022-01-03'),
+('Mocorito',40.1,39.8,'2022-01-03'),('Colima',36.5,33.6,'2022-01-03'),
+('Obregón',38.1,35.2,'2022-01-03'),('Hermosillo',44.6,43.1,'2022-01-03'),
+('Navojoa',41.4,38.6,'2022-01-03'),('Guasave',39.6,35.4,'2022-01-03'),
+('Chihuahua',26.7,22.6,'2022-01-03'),('Mazatlán',39.1,35.7,'2022-01-03'),
+('Monterrey',26.1,21.9,'2022-01-03'),('Guadalajara',27.4,21.8,'2022-01-03'),
+('Puerto Vallarta',28.6,22.2,'2022-01-03'),('Cd. de México',24.4,17.2,'2022-01-03'),
+('Cancún',26.4,25.7,'2022-01-03'),('Los Mochis',42.1,39.1,'2022-01-03'),
+('Culiacán',41.2,38.7,'2022-01-03'),('Cuernavaca',26.4,21.5,'2022-01-03'),
+('Mocorito',42.1,35.2,'2022-01-03'),('Colima',37.5,28.7,'2022-01-03');
+
+*-- Ahora, queremos ver por cada ciudad que se encuentra registrada, mostrar cual 
+fue la temperatura mas alta que sufrió pero solo aquellas donde la maxima
+temperatura es menor o igual a 30 grados. --*
+
+SELECT * FROM ciudades WHERE nombre = 'Cancún'
+
+SELECT nombre, max(temperatura_maxima) AS temp_max
+FROM ciudades
+GROUP BY nombre
+HAVING max(temperatura_maxima) <= 30
+
+*-- Ahora, vamos a ver la maxima temperatura que alcanzaron las ciudades
+que comienzan con la letra 'C' pero donde su temperatura maxima sea
+menor o igual que 30. --*
+
+SELECT nombre, MAX(temperatura_maxima) AS temp_max
+FROM ciudades
+WHERE nombre LIKE '%C%'
+GROUP BY nombre
+HAVING max(temperatura_maxima) <= 30
+
