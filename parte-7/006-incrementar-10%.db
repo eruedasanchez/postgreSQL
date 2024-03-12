@@ -1,0 +1,21 @@
+Crear función que incremente el 10% el precio a los productos de una tabla.
+
+*-- En este ejercicio, queremos crear una funcion que, incremente en un 10% 
+el precio de todos los productos de la tabla products. --*
+
+CREATE OR REPLACE FUNCTION incrementar_valores()
+RETURNS VOID
+AS $BODY$
+DECLARE
+
+BEGIN
+	UPDATE products SET precio = precio + 0.10 * precio;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Ahora, ejecutamos la funcion de la siguiente manera: --*
+
+SELECT incrementar_valores() 
+
+*-- Si ejecutamos SELECT * FROM products, observamos que el producto se
+inserto correctamente en la tabla. --*
