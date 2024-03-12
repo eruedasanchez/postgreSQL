@@ -1,0 +1,19 @@
+Crear función para eliminar los registros de una tabla alumnos, en base a su promedio.
+
+*-- En este ejercicio, queremos crear una funcion que, elimine a todos 
+los alumnos cuyo promedio sea mayor que 90. --*
+
+CREATE OR REPLACE FUNCTION eliminar_alumnos_destacados()
+RETURNS VOID
+AS $BODY$
+DECLARE
+		
+BEGIN
+	DELETE FROM alumnos WHERE promedio >= 90;
+	RETURN;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Ahora, ejecutamos la funcion de la siguiente manera: --*
+
+SELECT eliminar_alumnos_destacados() 
