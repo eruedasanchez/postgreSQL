@@ -1,0 +1,25 @@
+Crear función para exportar los datos de una tabla, en un archivo csv.
+
+*-- En este ejercicio, queremos crear una funcion que, copie todos los 
+registros de una tabla en un archivo de formato '.csv'. --*
+
+CREATE OR REPLACE FUNCTION respaldar_tabla()
+RETURNS BOOLEAN
+AS $BODY$
+DECLARE
+		
+BEGIN
+	COPY (SELECT * FROM products) TO '/Users/ezequielpc/Desktop/archivo_respaldo_productos.csv'
+	CSV HEADER DELIMITER ',';
+	
+	
+	RETURN TRUE;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Ahora, ejecutamos la funcion de la siguiente manera: --*
+
+SELECT respaldar_tabla() 
+
+*-- Obteniendo como resultado 'TRUE' y observamos que en el escritorio se
+creo el archivo 'archivo_respaldo_productos.csv'--*
