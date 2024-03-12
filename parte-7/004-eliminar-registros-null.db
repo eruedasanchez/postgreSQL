@@ -1,0 +1,24 @@
+Crear función para eliminar registros null de una tabla.
+
+*-- En este ejercicio, queremos crear una funcion que, elimine a todos 
+los alumnos que tengan el valor de promedio igual a 'null' de la tabla
+alumnos. --*
+
+CREATE OR REPLACE FUNCTION eliminar_promedios_null()
+RETURNS INTEGER
+AS $BODY$
+DECLARE
+	contador INTEGER;
+		
+BEGIN
+	SELECT COUNT(*) FROM alumnos WHERE promedio < 80 INTO contador;
+	DELETE FROM alumnos WHERE promedio < 80;
+	RETURN contador;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Ahora, ejecutamos la funcion de la siguiente manera: --*
+
+SELECT eliminar_promedios_null() 
+
+DROP FUNCTION eliminar_promedios_null()

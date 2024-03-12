@@ -1,0 +1,22 @@
+Insertar productos en la tabla products.
+
+*-- En este ejercicio, queremos crear una funcion que, inserte productos
+en la tabla products. --*
+
+CREATE OR REPLACE FUNCTION insertar_productos(prodid INTEGER, description VARCHAR, valor DOUBLE PRECISION)
+RETURNS VOID
+AS $BODY$
+DECLARE
+	contador INTEGER;
+		
+BEGIN
+	INSERT INTO products VALUES(prodid, description, valor);
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Ahora, ejecutamos la funcion de la siguiente manera: --*
+
+SELECT insertar_productos(110, 'Lata de frijoles Medusa 100g', 110.75) 
+
+*-- Si ejecutamos SELECT * FROM products, observamos que el producto se
+inserto correctamente en la tabla. --*
