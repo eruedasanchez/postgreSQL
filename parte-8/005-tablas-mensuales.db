@@ -1,0 +1,53 @@
+Automatizar la creación de tablas mensuales en funciones de PostgreSQL.
+
+*-- Comenzamos creando la funcion 'crear_tablas_mensuales' la cual va a crear una 
+tabla por cada mes para poder segmentar mejor la informacion de las ventas de la
+tabla 'ventas_ocho'.
+Es decir, la idea es crear tablas por cada vez, o sea, crear la tabla 
+'ventas202401' correspondiente a enero, 
+'ventas202402' correspondiente a febrero,
+'ventas202403' correspondiente a marzo, etc.
+Donde la tabla 'ventas_ocho' va a ser la tabla madre
+que contiene la informacion de todos los meses. --*
+
+
+CREATE OR REPLACE FUNCTION crear_tablas_mensuales()
+RETURNS TEXT 
+AS $BODY$
+DECLARE
+	dia_actual INTEGER;
+	anio_mes INTEGER;
+	consulta TEXT;
+
+BEGIN
+	SELECT DATE_PART('day', CURRENT_DATE) INTO dia_actual;
+	RAISE NOTICE 'Se almacena el dia actual en la variable dia_actual';
+	SELECT SUBSTRING(REPLACE(CURRENT_DATE::TEXT,'-',''),1,6) 
+	INTO anio_mes;
+	RAISE NOTICE 'Se almacena el dia actual en la variable dia_actual';
+	
+	IF(dia_actual = 1 OR dia_actual = 01) THEN
+		consulta:= 'CREATE TABLE regventas_'||anio_mes||'(
+			numvendedor BIGINT,
+			fecha DATE,
+			ciudad VARCHAR(45),
+			estado VARCHAR(45),
+			numcliente BIGINT,
+			monto DOUBLE PRECISION
+		);';
+		EXECUTE consulta;
+	END IF;
+	
+	
+	RETURN 'Proceso exitoso';
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Creamos la función y la ejecutamos con: --*
+
+SELECT crear_tablas_mensuales() y obtenemos como 
+resultado 'Proceso exitoso'.
+
+*-- Si ejecutamos SELECT * FROM regventas_202403, vemos que la tabla
+se creo con exito pero se encuentra vacia--*
+
