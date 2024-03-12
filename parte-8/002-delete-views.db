@@ -1,0 +1,15 @@
+Borrar una vista.
+
+*-- Ahora, si intentamos eliminar la tabla 'alumnos' --*
+
+DROP TABLE IF EXISTS alumnos
+
+*-- Obtenemos un error porque dicha tabla tiene asociada una vista
+que debemos eliminar primero. --*
+
+DROP VIEW ingreso_alumnos
+
+*-- Una vez realizado esto, si podemos eliminar la tabla alumnos 
+DROP TABLE IF EXISTS alumnos. --*
+
+

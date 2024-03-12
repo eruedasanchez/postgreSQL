@@ -1,0 +1,32 @@
+Función que registre en una tabla cada vez que la propia función sea llamada.
+
+*-- Queremos ejecutar una funcion que determine si se ejecuto cierto proceso. --*
+
+CREATE OR REPLACE FUNCTION bitacora_procesos()
+RETURNS TEXT 
+AS $BODY$
+DECLARE
+
+BEGIN
+	IF EXISTS(SELECT tablename FROM pg_tables WHERE tablename = 'lista_procesos') THEN
+		INSERT INTO lista_procesos VALUES ('Ejecucion funcion bitacora_procesos()', NOW());
+	END IF;
+
+	RETURN 'Proceso exitoso';
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Ahora, creamos la siguiente tabla: --*
+
+CREATE TABLE lista_procesos(
+	nombre_proceso VARCHAR(100),
+	fecha_proceso DATE
+);
+
+*-- Y ejecutamos la funcion 'bitacora_procesos()'. --*
+
+SELECT bitacora_procesos()
+
+*-- Obtenemos como resultado 'Proceso exitoso' y si ejecutamos la tabla 'lista_procesos'
+SELECT * FROM lista_procesos, se muestra registrada la ejecucion de la funcion 
+'bitacora_procesos()'. --*
