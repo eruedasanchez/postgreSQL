@@ -1,0 +1,30 @@
+Crear función con excepciones y manejo de errores(IF NOT FOUND y RAISE EXCEPTION).
+
+*-- En este ejercicio, queremos crear una funcion que, retorne todos los registros
+de la tabla products. --*
+
+CREATE OR REPLACE FUNCTION visualizar_producto(idprod INTEGER)
+RETURNS VARCHAR
+AS $BODY$
+DECLARE
+	prod VARCHAR;
+
+BEGIN
+	SELECT descripcion INTO prod FROM products WHERE productoid = idprod;
+	
+	IF NOT FOUND THEN
+		RAISE EXCEPTION 'El producto con id % NO ha sido encontrado', $1;
+	END IF;
+	RETURN prod;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Ahora, ejecutamos la funcion de la siguiente manera: --*
+
+SELECT visualizar_producto(10000) 
+
+*-- Obteniendo como resultado 'El producto con id 10000 NO ha sido encontrado' 
+en la seccion Messages --*
+
+*-- Si ejecutamos la funcion SELECT visualizar_producto(100),
+obtenemos como resultado 'Lata de atun Medusa 400 g'. --*
