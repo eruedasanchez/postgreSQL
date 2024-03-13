@@ -1,0 +1,73 @@
+*-- Ahora, vamos a utilizar los 'triggers' para que validar que la contraseña
+insertada no exceda el limite permitido ni sea lo suficiente corta. --*
+
+*-- Para ello, comenzamos creando la tabla 'usuarios'. --*
+
+CREATE TABLE usuarios(
+	nombre VARCHAR(45),
+	usuario VARCHAR(45),
+	contrasena VARCHAR(45)
+);
+
+*-- E insertamos los siguientes registros: --*
+
+INSERT INTO usuarios VALUES
+('Juan Mendoza', 'JM1985', '123456'),
+('Abril Esparza', 'Abrilsita', '4444'),
+('Liliana Pera', 'Lili5', '123444'),
+('Virginia Perez', 'VickiP', '100045'),
+('Laura Sauceda', 'LauSau', 'Lau95');
+
+*-- Ahora, vamos a crear la funcion que va a ejecutar 
+el 'trigger'. Dicha funcion tiene que impedir que la
+contraseña supere los 8 caracteres. --*
+
+CREATE OR REPLACE FUNCTION function_password()
+RETURNS TRIGGER
+AS $BODY$
+BEGIN
+	IF LENGTH(NEW.contrasena) > 8 OR NEW.contrasena IS NULL THEN
+		RAISE EXCEPTION 'La contraseña no debe tener mas de 8 caracteres o
+		ser nula.';
+	END IF;
+	
+	IF NEW.nombre IS NULL THEN
+		RAISE EXCEPTION 'El nombre no debe ser nulo';
+	END IF;
+	
+	IF NEW.usuario IS NULL THEN
+		RAISE EXCEPTION 'El usuario no debe ser nulo';
+	END IF;
+	
+	RETURN NEW;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Una vez que creamos la función, definimos el 'Trigger'. --*
+
+CREATE TRIGGER trigger_password
+BEFORE INSERT OR UPDATE 
+on usuarios
+FOR EACH ROW
+EXECUTE PROCEDURE function_password(); 
+
+*-- Ahora, vamos a intentar insertar un usuario cuya contraseña supere 
+los 8 caracteres.--*
+
+INSERT INTO usuarios VALUES ('Jose Aragon', 'jose.aragon', '999999999');
+
+*-- Y obtenemos el mensaje: 'La contraseña no debe tener mas de 8 caracteres o
+ser nula.' porque '999999999' tiene 9 caracteres y vemos que en la tabla
+'usuarios' no se inserto el registro. --* 
+
+*-- Ahora, vamos a intentar insertar un usuario cuya nombre sea nulo.--*
+
+INSERT INTO usuarios VALUES (null, 'flores', '12345');
+
+*-- Y obtenemos el mensaje: 'El nombre no debe ser nulo' porque el valor del
+nombre es 'null'. --* 
+
+*-- Finalmente, si insertamos un usuario que cumpla con los requisitos
+se va a insertar de manera correcta.--*
+
+INSERT INTO usuarios VALUES ('Javier Gonzalez', 'j.gonzalez24', 'jg7624');
