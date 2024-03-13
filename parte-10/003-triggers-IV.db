@@ -1,0 +1,137 @@
+Triggers. Ejercicio 4.
+Disparador que que nos ayude a tener el historial de una tabla de clientes, en una segunda tabla.
+
+*-- Comenzamos creando la tabla 'cliente_trigger_cuatro' y 'log_clientes'. --*
+
+CREATE TABLE cliente_trigger_cuatro(
+	idcliente INTEGER PRIMARY KEY,
+	nombre TEXT,
+	direccion TEXT,
+	fecha_alta DATE
+);
+
+CREATE TABLE log_clientes(
+	idcliente INTEGER PRIMARY KEY,
+	nombre TEXT,
+	direccion TEXT,
+	fecha_alta DATE,
+	log_movimiento TEXT,
+	log_fecha_movimiento DATE
+);
+
+*-- En este ejercicio, cuando insertemos un cliente en la tabla
+'cliente_trigger_cuatro' tambien se va a insertar en la tabla
+'log_clientes' pero como un historial de la tabla. Lo mismo
+para el caso de borrado o actualizacion de informacion de algun
+cliente.
+Basicamente, cuando se modifique la tabla 'cliente_trigger_cuatro',
+dicha informacion de la modificación se va a almacenar en la tabla
+'log_clientes'. --*
+
+*-- Creamos la funcion que va a ejecutar el 'trigger'. --*
+
+CREATE OR REPLACE FUNCTION tg_function_log_cliente()
+RETURNS TRIGGER 
+AS $BODY$
+BEGIN 
+	IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN 
+		INSERT INTO log_clientes(
+			idcliente, 
+			nombre, 
+			direccion, 
+			fecha_alta, 
+			log_movimiento,
+			log_fecha_movimiento
+		) VALUES (
+			NEW.idcliente, 
+			NEW.nombre, 
+			NEW.direccion, 
+			NEW.fecha_alta, 
+			TG_OP, 
+			CURRENT_DATE
+		);
+		RETURN NEW;
+	END IF;
+	
+	IF (TG_OP = 'DELETE') THEN
+	-- Colocamos OLD porque se van a eliminar los valores originales.
+		INSERT INTO log_clientes(
+			idcliente, 
+			nombre, 
+			direccion, 
+			fecha_alta, 
+			log_movimiento,
+			log_fecha_movimiento
+		) VALUES (
+			OLD.idcliente, 
+			OLD.nombre, 
+			OLD.direccion, 
+			OLD.fecha_alta, 
+			TG_OP, 
+			CURRENT_DATE
+		);
+		RETURN OLD;
+	END IF;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+*-- Donde 'TG_OP' indica la operacion que ejecuta el 'trigger'. --*
+
+*-- Ahora, creamos el 'trigger'. --*
+
+CREATE TRIGGER tg_log_cliente
+AFTER INSERT OR UPDATE OR DELETE 
+ON cliente_trigger_cuatro
+FOR EACH ROW
+EXECUTE PROCEDURE tg_function_log_cliente();
+
+*-- Ahora, que ya creamos la funcion y el 'trigger' vamos a 
+intentar insertar un cliente en la tabla ''. --*
+
+INSERT INTO cliente_trigger_cuatro VALUES(1, 'Perla', 'Los Cabos 41', '2020-12-01');
+
+*-- Y si observamos las tablas 'cliente_trigger_cuatro' y 'log_clientes', vemos que
+en ambas la inserción fue satisfactoria y en la tabla 'log_clientes' se agregó
+la informacion de la insercion con la fecha de la realizacion. --*
+
+*-- Insertamos otro registro mas: --*
+
+INSERT INTO cliente_trigger_cuatro VALUES(2, 'Laura Garza', 'Esperanza 45', CURRENT_DATE);
+
+*-- Ahora, vamos a realizar una actualizacion de un regsitro: --*
+
+UPDATE cliente_trigger_cuatro SET nombre = 'Agustin Perez' WHERE idcliente = 1
+
+*-- Pero, obtenemos un error porque cuando se ingresa a la condicion 'IF', se
+inserta el registro modificado pero con un 'id' existente. Por lo tanto, para
+solucionar esto, eliminamos la PRIMARY_KEY de 'idcliente' de la tabla
+'cliente_trigger_cuatro'. --*
+
+ALTER TABLE cliente_trigger_cuatro DROP CONSTRAINT cliente_trigger_cuatro_pkey;
+ALTER TABLE log_clientes DROP CONSTRAINT log_clientes_pkey;
+
+*-- Donde 'cliente_trigger_cuatro_pkey' es el nombre de la restriccion
+y en caso de no saberlo, ejecutamos: --*
+
+SELECT CONSTRAINT_NAME
+FROM information_schema.table_constraints
+WHERE TABLE_NAME = 'cliente_trigger_cuatro_pkey' AND constraint_type = 'PRIMARY KEY';
+
+SELECT CONSTRAINT_NAME
+FROM information_schema.table_constraints
+WHERE TABLE_NAME = 'log_clientes' AND constraint_type = 'PRIMARY KEY';
+
+*-- Ahora, si podemos realizar la actualizacion del registro. --*
+
+UPDATE cliente_trigger_cuatro SET nombre = 'Agustin Perez' WHERE idcliente = 1
+
+*-- Y observamos que ambas tablas se actualizan de manera correcta. --*
+
+*-- Por ultimo, si eliminamos los clientes de la tabla 'cliente_trigger_cuatro': --*
+
+DELETE FROM cliente_trigger_cuatro 
+
+*-- Observamos que aparecen los registros eliminados de la tabla con la 
+operacion 'DELETE'. --*
+
