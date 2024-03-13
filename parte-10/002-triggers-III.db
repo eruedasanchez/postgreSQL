@@ -1,0 +1,40 @@
+Triggers. Ejercicio 3. Disparador que nos permita validar fechas en una tabla.
+
+*-- Comenzamos creando la tabla 'clientes_triggers'. --*
+
+CREATE TABLE cliente_triggers(
+	idcliente INTEGER PRIMARY KEY,
+	nombre TEXT,
+	fecha_alta DATE
+);
+
+*-- Creamos la funcion que va a ejecutar el 'trigger'. --*
+
+CREATE OR REPLACE FUNCTION function_validar_fecha()
+RETURNS TRIGGER 
+AS $BODY$
+BEGIN 
+	IF(EXTRACT(YEAR FROM NEW.fecha_alta)) > (EXTRACT(YEAR FROM CURRENT_DATE)) THEN
+		RAISE EXCEPTION 'Error en el año ingresado. El año ingresado no puede 
+		ser mayor al actual (2024). ';
+	END IF;
+	RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+*-- Ahora, creamos el 'trigger'. --*
+
+CREATE TRIGGER trigger_clientes
+BEFORE INSERT OR UPDATE ON cliente_triggers
+FOR EACH ROW
+EXECUTE PROCEDURE function_validar_fecha();
+
+*-- Ahora, que ya creamos la funcion y el 'trigger' vamos a 
+intentar insertar un cliente cuya fecha de alta exceda la actual. --*
+
+INSERT INTO cliente_triggers VALUES(1, 'Pablo Garza', '2025-01-01');
+
+*-- Obtenemos el siguiente mensaje: 'Error en el año ingresado. 
+El año ingresado no puede ser mayor al actual (2024).' y el cliente
+no se inserta en la tabla. --*
