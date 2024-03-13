@@ -1,0 +1,56 @@
+Triggers. Ejercicio 1. Disparador que al modificar registros con Update de una primer tabla, 
+inserte esos registros modificados en una segunda tabla.
+
+*-- Los triggers o disparadores se asocian con tablas en nuestra 'DB'.
+Estos disparadores se van a ejecutar de manera automatica cuando ocurra
+algun evento en la base de datos.--*
+
+*-- Comencemos viendo este concepto con un ejemplo.
+Tenemos la tabla 'empleados' y vamos a crear un disparador que
+haga que una función se ejecute cuando hagamos alguna acción sobre 
+la tabla. --*
+
+*-- Suponiendo que quiero actualizar el nombre del empleado con idempleado = 1002.
+Entonces, antes de realizar el cambio, voy a respaldar la informacion del registro
+en otra tabla. Esto lo hacemos con los 'disparadores' o 'triggers'. --*
+
+*-- Entonces, comenzamos la tabla respaldo de empleados de la siguiente manera: --*
+
+CREATE TABLE respaldo_empleados AS SELECT * FROM empleados LIMIT 0
+
+*-- De esta manera, copiamos las columnas de la tabla 'empleados' y la misma queda vacia. --*
+
+*-- Ahora, vamos a crear la función que deseamos que el disparador ejecute. --*
+
+CREATE OR REPLACE FUNCTION function_accion()
+RETURNS TRIGGER
+AS $BODY$
+BEGIN
+	INSERT INTO respaldo_empleados VALUES(OLD.idempleado, OLD.nombre, OLD.puestoid);
+	
+	RETURN NEW;
+END;
+$BODY$ LANGUAGE 'plpgsql';
+
+*-- Ahora, vamos a definir el 'disparador' o 'trigger'. --*
+
+CREATE TRIGGER update_empleados
+BEFORE UPDATE ON empleados
+FOR EACH ROW 
+EXECUTE PROCEDURE function_accion();
+
+*-- Por lo tanto, creamos el 'TRIGGER' de nombre 'update_empleados'.
+La linea 'BEFORE UPDATE empleados' indica que este disparador se va a
+ejecutar antes de actualizar/modificar la tabla empleados.
+'FOR EACH ROW' indica que se va a aplicar a todas las filas de la tabla y 
+'EXECUTE PROCEDURE function_accion();' indica que se va a ejecutar la funcion. --*
+
+*-- Ahora, vamos a cambiarle el nombre del empleado con 'idempleado' = 1002, 
+es decir, una modificacion en la tabla 'empleados'. --*
+
+UPDATE empleados SET nombre = 'Marcos Miranda' WHERE idempleado = 1002
+
+*-- Ejecutamos la instruccion y observamos que en la tabla 'empleados',
+el empleado 1002 tiene de nombre 'Marcos Miranda' y en la tabla
+'respaldo_empleados' se encuentra el nombre 'Daniel' para el mismo
+empleado. --*
